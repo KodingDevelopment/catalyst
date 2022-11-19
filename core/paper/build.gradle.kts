@@ -1,6 +1,8 @@
+import net.minecrell.pluginyml.bukkit.BukkitPluginDescription
+
 /*
  * Catalyst - Minecraft plugin development toolkit
- * Copyright (C) $today.year  Koding Development
+ * Copyright (C) 2022  Koding Development
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -15,3 +17,16 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
+apply(plugin = "gg.hubblemc.paper")
+
+dependencies {
+    // Project
+    shadow(project(":core-common"))
+}
+
+configure<BukkitPluginDescription> {
+    name = "Catalyst"
+    main = "dev.koding.catalyst.core.paper.CatalystPlugin"
+    load = BukkitPluginDescription.PluginLoadOrder.STARTUP
+}

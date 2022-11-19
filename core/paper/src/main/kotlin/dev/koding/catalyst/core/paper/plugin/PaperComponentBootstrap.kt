@@ -16,26 +16,26 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-pluginManagement {
-    repositories {
-        mavenLocal()
-        gradlePluginPortal()
-        maven("https://repo.papermc.io/repository/maven-public/")
+package dev.koding.catalyst.core.paper.plugin
+
+import com.google.inject.Inject
+import com.google.inject.Singleton
+import dev.koding.catalyst.core.common.injection.bootstrap.ComponentBootstrap
+import dev.koding.catalyst.core.common.injection.component.Injectable
+import org.bukkit.Bukkit
+import org.bukkit.event.Listener
+
+/**
+ * Registers Listeners with the Bukkit API.
+ */
+@Singleton
+class PaperComponentBootstrap @Inject constructor(
+    components: Set<Injectable>,
+    private val plugin: PaperPlugin
+) : ComponentBootstrap(components) {
+
+    override fun enable() {
+        super.enable()
+        bootstrap<Listener> { Bukkit.getPluginManager().registerEvents(it, plugin) }
     }
 }
-
-rootProject.name = "catalyst"
-
-fun includeProject(name: String) {
-    val module = name.substring(1).replace(':', '-')
-    val path = name.substring(1).replace(':', '/')
-
-    include(":$module")
-    project(":$module").projectDir = File(path)
-}
-
-// Core
-includeProject(":core:common")
-includeProject(":core:paper")
-includeProject(":core:velocity")
-includeProject(":core:fabric")

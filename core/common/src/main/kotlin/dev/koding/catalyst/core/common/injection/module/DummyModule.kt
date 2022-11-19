@@ -1,6 +1,6 @@
 /*
  * Catalyst - Minecraft plugin development toolkit
- * Copyright (C) $today.year  Koding Development
+ * Copyright (C) 2022  Koding Development
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -15,3 +15,19 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
+package dev.koding.catalyst.core.common.injection.module
+
+import dev.koding.catalyst.core.common.injection.component.Injectable
+
+/**
+ * We provide a dummy module to all platform plugins since - without it -
+ * Guice will complain about not having any [Injectable]s bound.
+ */
+object DummyModule : Module() {
+    override fun configure() {
+        multibind<Injectable>(DummyComponent)
+    }
+}
+
+object DummyComponent : Injectable

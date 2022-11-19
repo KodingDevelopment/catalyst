@@ -1,6 +1,6 @@
 /*
  * Catalyst - Minecraft plugin development toolkit
- * Copyright (C) $today.year  Koding Development
+ * Copyright (C) 2022  Koding Development
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -15,3 +15,21 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
+package dev.koding.catalyst.core.common.injection.module
+
+import dev.koding.catalyst.core.common.injection.component.PluginLogger
+import dev.koding.catalyst.core.common.plugin.PlatformPlugin
+import mu.KLogger
+import org.slf4j.Logger
+
+/**
+ * Bind the plugin & logger to Guice.
+ */
+class PlatformModule(private val plugin: PlatformPlugin) : Module() {
+    override fun configure() {
+        bind<PlatformPlugin>().toInstance(plugin)
+        bind<Logger>().annotatedWith<PluginLogger>().toInstance(plugin.logger)
+        bind<KLogger>().annotatedWith<PluginLogger>().toInstance(plugin.logger)
+    }
+}

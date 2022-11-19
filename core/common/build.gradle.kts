@@ -1,6 +1,6 @@
 /*
  * Catalyst - Minecraft plugin development toolkit
- * Copyright (C) $today.year  Koding Development
+ * Copyright (C) 2022  Koding Development
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -15,3 +15,14 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
+dependencies {
+    // Logging
+    shadow("org.slf4j:slf4j-api:2.0.3")
+    shadow("io.github.microutils:kotlin-logging-jvm:3.0.4")
+
+    // Injection
+    shadow("com.google.inject:guice:5.1.0")
+    shadow("com.google.inject.extensions:guice-assistedinject:5.1.0")
+    shadow("dev.misfitlabs.kotlinguice4:kotlin-guice:1.6.0")
+}

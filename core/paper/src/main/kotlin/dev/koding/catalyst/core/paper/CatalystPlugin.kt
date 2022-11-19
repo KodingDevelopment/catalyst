@@ -1,6 +1,6 @@
 /*
  * Catalyst - Minecraft plugin development toolkit
- * Copyright (C) $today.year  Koding Development
+ * Copyright (C) 2022  Koding Development
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -15,3 +15,10 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+
+package dev.koding.catalyst.core.paper
+
+import dev.koding.catalyst.core.paper.plugin.PaperPlugin
+
+@Suppress("unused")
+class CatalystPlugin : PaperPlugin(arrayOf())
