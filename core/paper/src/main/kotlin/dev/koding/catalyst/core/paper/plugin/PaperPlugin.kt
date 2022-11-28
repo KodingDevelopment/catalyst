@@ -25,6 +25,7 @@ import dev.koding.catalyst.core.common.injection.module.PlatformModule
 import dev.koding.catalyst.core.common.plugin.PlatformPlugin
 import mu.KotlinLogging
 import org.bukkit.plugin.java.JavaPlugin
+import java.nio.file.Path
 
 /**
  * Root plugin class for Paper plugins.
@@ -35,6 +36,7 @@ open class PaperPlugin(override val modules: Array<AbstractModule>) : PlatformPl
 
     override val rootModules by lazy { arrayOf<AbstractModule>(PlatformModule(this), PaperPluginModule(this)) }
     override var logger = KotlinLogging.logger(slF4JLogger)
+    override var dataDirectory: Path = dataFolder.toPath()
 
     @Inject
     lateinit var bootstrap: PaperComponentBootstrap

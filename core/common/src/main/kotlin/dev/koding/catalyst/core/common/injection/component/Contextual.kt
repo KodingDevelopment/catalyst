@@ -18,18 +18,32 @@
 
 package dev.koding.catalyst.core.common.injection.component
 
-import com.google.inject.BindingAnnotation
+import com.google.inject.Inject
+import dev.misfitlabs.kotlinguice4.getInstance
 
-/**
- * Guice automatically binds a logger instance which we don't need, so we need to annotate the
- * plugin logger with this to specify which logger should be injected.
- *
- * @author Koding
- */
-@BindingAnnotation
-@Retention(AnnotationRetention.RUNTIME)
-annotation class PluginLogger
+open class Contextual : Injectable {
 
-@BindingAnnotation
-@Retention(AnnotationRetention.RUNTIME)
-annotation class DataDirectory
+    @Inject
+    lateinit var context: InjectionContext
+
+    /**
+     * Get an instance of the given type from the current context.
+     */
+    protected inline fun <reified T : Injectable> get(): T = context.plugin.injector.getInstance()
+
+    /**
+     * Get an instance of the given type from the given context.
+     *
+     * @param clazz the class to get an instance of
+     */
+    protected fun <T : Injectable> get(clazz: Class<T>): T = context.plugin.injector.getInstance(clazz)
+
+    /**
+     * Return a data file for the given name.
+     *
+     * @param name the name of the file
+     * @return the data file
+     */
+    protected fun file(name: String) = lazy { context.fileManager[name] }
+
+}

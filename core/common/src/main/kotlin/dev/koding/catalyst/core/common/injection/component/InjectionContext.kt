@@ -16,28 +16,20 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.koding.catalyst.core.paper
+package dev.koding.catalyst.core.common.injection.component
 
 import com.google.inject.Inject
-import com.google.inject.Singleton
-import dev.koding.catalyst.core.common.injection.component.Contextual
-import dev.koding.catalyst.core.paper.plugin.PaperPlugin
+import dev.koding.catalyst.core.common.external.file.FileManager
+import dev.koding.catalyst.core.common.plugin.PlatformPlugin
+import mu.KLogger
+import java.nio.file.Path
 
-@Suppress("unused")
-class CatalystPlugin : PaperPlugin(arrayOf()) {
+data class InjectionContext @Inject constructor(
+    // Plugin data
+    val plugin: PlatformPlugin,
+    @PluginLogger val logger: KLogger,
+    @DataDirectory val dataDir: Path,
 
-    @Inject
-    lateinit var test: Test
-
-    override fun onEnable() {
-        super.onEnable()
-
-        println(test.file)
-    }
-
-}
-
-@Singleton
-class Test : Contextual() {
-    val file by file("test")
-}
+    // Managers
+    val fileManager: FileManager
+)

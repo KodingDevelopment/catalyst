@@ -16,28 +16,26 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.koding.catalyst.core.paper
+package dev.koding.catalyst.core.common.external.file
 
 import com.google.inject.Inject
-import com.google.inject.Singleton
-import dev.koding.catalyst.core.common.injection.component.Contextual
-import dev.koding.catalyst.core.paper.plugin.PaperPlugin
+import com.google.inject.assistedinject.Assisted
+import dev.koding.catalyst.core.common.injection.component.InjectionContext
+import kotlin.io.path.createDirectories
+import kotlin.io.path.createFile
+import kotlin.io.path.exists
 
-@Suppress("unused")
-class CatalystPlugin : PaperPlugin(arrayOf()) {
+class ExternalFile @Inject constructor(
+    @Assisted name: String,
+    context: InjectionContext
+) {
 
-    @Inject
-    lateinit var test: Test
+    // TODO: File format
+    private val file = context.dataDir.resolve(name)
+        .also {
+            // TODO: Copy file from resources
+            it.parent.createDirectories()
+            if (!it.exists()) it.createFile()
+        }
 
-    override fun onEnable() {
-        super.onEnable()
-
-        println(test.file)
-    }
-
-}
-
-@Singleton
-class Test : Contextual() {
-    val file by file("test")
 }

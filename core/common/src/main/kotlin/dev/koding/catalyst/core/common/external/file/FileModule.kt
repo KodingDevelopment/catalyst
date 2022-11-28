@@ -16,28 +16,21 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package dev.koding.catalyst.core.paper
+package dev.koding.catalyst.core.common.external.file
 
-import com.google.inject.Inject
-import com.google.inject.Singleton
-import dev.koding.catalyst.core.common.injection.component.Contextual
-import dev.koding.catalyst.core.paper.plugin.PaperPlugin
+import com.google.inject.assistedinject.FactoryModuleBuilder
+import dev.koding.catalyst.core.common.injection.module.Module
 
-@Suppress("unused")
-class CatalystPlugin : PaperPlugin(arrayOf()) {
-
-    @Inject
-    lateinit var test: Test
-
-    override fun onEnable() {
-        super.onEnable()
-
-        println(test.file)
+class FileModule : Module() {
+    override fun configure() {
+        install(
+            FactoryModuleBuilder()
+                .implement(ExternalFile::class.java, ExternalFile::class.java)
+                .build(ExternalFileFactory::class.java)
+        )
     }
-
 }
 
-@Singleton
-class Test : Contextual() {
-    val file by file("test")
+interface ExternalFileFactory {
+    fun create(name: String): ExternalFile
 }

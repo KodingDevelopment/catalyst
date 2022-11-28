@@ -24,6 +24,7 @@ import com.google.inject.Injector
 import dev.koding.catalyst.core.common.injection.component.Bootstrap
 import dev.koding.catalyst.core.common.injection.module.DummyModule
 import mu.KLogger
+import java.nio.file.Path
 import kotlin.system.measureTimeMillis
 
 interface PlatformPlugin : Bootstrap {
@@ -53,6 +54,11 @@ interface PlatformPlugin : Bootstrap {
      * The logger used by the plugin.
      */
     var logger: KLogger
+
+    /**
+     * The data directory used by the plugin.
+     */
+    var dataDirectory: Path
 
     // TODO: Injection context
     override fun enable() {

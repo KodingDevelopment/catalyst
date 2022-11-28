@@ -18,10 +18,13 @@
 
 package dev.koding.catalyst.core.common.injection.module
 
+import dev.koding.catalyst.core.common.external.file.FileModule
+import dev.koding.catalyst.core.common.injection.component.DataDirectory
 import dev.koding.catalyst.core.common.injection.component.PluginLogger
 import dev.koding.catalyst.core.common.plugin.PlatformPlugin
 import mu.KLogger
 import org.slf4j.Logger
+import java.nio.file.Path
 
 /**
  * Bind the plugin & logger to Guice.
@@ -31,5 +34,9 @@ class PlatformModule(private val plugin: PlatformPlugin) : Module() {
         bind<PlatformPlugin>().toInstance(plugin)
         bind<Logger>().annotatedWith<PluginLogger>().toInstance(plugin.logger)
         bind<KLogger>().annotatedWith<PluginLogger>().toInstance(plugin.logger)
+        bind<Path>().annotatedWith<DataDirectory>().toInstance(plugin.dataDirectory)
+
+        // Default functionality
+        install(FileModule())
     }
 }
