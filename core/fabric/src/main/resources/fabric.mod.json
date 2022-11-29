@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "catalyst",
+  "version": "${version}",
+  "name": "Catalyst",
+  "description": "Catalyst is a powerful, yet easy to use, framework for rapidly developing cross-platform mods.",
+  "authors": [
+    "Koding Development"
+  ],
+  "contact": {
+    "homepage": "https://koding.dev/",
+    "sources": "https://github.com/KodingDevelopment/catalyst"
+  },
+  "license": "GPL-3.0",
+  "icon": "assets/catalyst/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      {
+        "adapter": "kotlin",
+        "value": "dev.koding.catalyst.core.fabric.CatalystModFabric"
+      }
+    ]
+  },
+  "mixins": [
+    "catalyst.mixins.json"
+  ],
+  "depends": {
+    "fabric": "*",
+    "minecraft": ">=1.19.2",
+    "fabric-language-kotlin": ">=1.8.6+kotlin.1.7.21"
+  }
+}

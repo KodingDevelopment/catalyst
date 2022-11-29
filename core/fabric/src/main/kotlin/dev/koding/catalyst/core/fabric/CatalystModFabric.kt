@@ -16,30 +16,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-pluginManagement {
-    repositories {
-        mavenLocal()
-        gradlePluginPortal()
+package dev.koding.catalyst.core.fabric
 
-        maven("https://repo.papermc.io/repository/maven-public/")
-        maven("https://maven.fabricmc.net/")
-        maven("https://maven.architectury.dev/")
-        maven("https://maven.minecraftforge.net/")
+import net.fabricmc.api.ModInitializer
+
+@Suppress("unused")
+object CatalystModFabric : ModInitializer {
+    override fun onInitialize() {
+        println("aha goo morning wassup")
     }
 }
-
-rootProject.name = "catalyst"
-
-fun includeProject(name: String) {
-    val module = name.substring(1).replace(':', '-')
-    val path = name.substring(1).replace(':', '/')
-
-    include(":$module")
-    project(":$module").projectDir = File(path)
-}
-
-// Core
-includeProject(":core:common")
-includeProject(":core:paper")
-includeProject(":core:velocity")
-includeProject(":core:fabric")

@@ -31,13 +31,17 @@ plugins {
     id("com.github.johnrengelman.shadow") version "7.1.2" apply false
 
     // Custom gradle plugin
-    id("gg.hubblemc.defaults") version "1.2.0"
-    id("gg.hubblemc.linting") version "1.2.0"
-    id("gg.hubblemc.paper") version "1.2.0" apply false
-    id("gg.hubblemc.velocity") version "1.2.0" apply false
+    id("gg.hubblemc.defaults") version "1.2.3"
+    id("gg.hubblemc.linting") version "1.2.3"
+    id("gg.hubblemc.paper") version "1.2.3" apply false
+    id("gg.hubblemc.velocity") version "1.2.3" apply false
 
     // IDEA plugin
     id("org.jetbrains.gradle.plugin.idea-ext") version "1.1.6"
+
+    // Fabric
+    id("architectury-plugin") version "3.4-SNAPSHOT" apply false
+    id("dev.architectury.loom") version "1.0-SNAPSHOT" apply false
 }
 
 subprojects {
@@ -49,8 +53,12 @@ subprojects {
     apply(plugin = "gg.hubblemc.linting")
 
     apply(plugin = "org.jetbrains.kotlin.jvm")
-    apply(plugin = "org.jetbrains.kotlin.kapt")
     apply(plugin = "org.jetbrains.kotlin.plugin.serialization")
+
+    if (project.name != "core-fabric") {
+        // Workaround for "fabric-loom must be applied BEFORE kapt in the plugins { } block."
+        apply(plugin = "org.jetbrains.kotlin.kapt")
+    }
 
     tasks {
         named<Test>("test") { useJUnitPlatform() }
