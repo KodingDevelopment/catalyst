@@ -18,7 +18,9 @@
 
 @file:Suppress("UnstableApiUsage")
 
+import com.diffplug.gradle.spotless.SpotlessExtension
 import gg.hubblemc.paper.PaperExtension
+import org.jlleitschuh.gradle.ktlint.KtlintExtension
 
 plugins {
     // Kotlin
@@ -40,8 +42,8 @@ plugins {
     id("org.jetbrains.gradle.plugin.idea-ext") version "1.1.6"
 
     // Fabric
-    id("architectury-plugin") version "3.4-SNAPSHOT" apply false
     id("dev.architectury.loom") version "1.0-SNAPSHOT" apply false
+    id("io.github.juuxel.loom-quiltflower") version "1.8.0" apply false
 }
 
 subprojects {
@@ -93,5 +95,13 @@ subprojects {
         configure<PaperExtension> {
             mcVersion.set("1.19.2")
         }
+    }
+
+    configure<SpotlessExtension> {
+        isEnforceCheck = false
+    }
+
+    configure<KtlintExtension> {
+        ignoreFailures.set(true)
     }
 }

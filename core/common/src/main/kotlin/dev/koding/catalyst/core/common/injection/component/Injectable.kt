@@ -15,20 +15,13 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package dev.koding.catalyst.core.common.injection.component
 
 /**
- * Represents a functional component that can be bound to the multibinder.
- * Any class that implements this interface will have special logic applied to
- * it, such as event registration and command registration.
+ * Automatically handles enable and disable functions for anything bound in
+ * the injection.
  */
-interface Injectable
-
-/**
- * Automatically handles enable and disable functions for anything bound in the [Injectable].
- */
-interface Bootstrap : Injectable {
+interface Bootstrap {
     /**
      * Sets the priority of the bootstrap. This is used to determine the order
      * in which the bootstrap is enabled and disabled. This is from highest to

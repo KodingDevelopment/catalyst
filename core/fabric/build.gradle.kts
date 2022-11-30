@@ -16,11 +16,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import dev.architectury.plugin.ArchitectPluginExtension
 import net.fabricmc.loom.api.LoomGradleExtensionAPI
 
 apply(plugin = "dev.architectury.loom")
-apply(plugin = "architectury-plugin")
+apply(plugin = "io.github.juuxel.loom-quiltflower")
 
 repositories {
     maven("https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1")
@@ -42,6 +41,7 @@ dependencies {
     "modApi"("net.fabricmc.fabric-api:fabric-api:${rootProject.property("fabric.api_version")}")
 
     // Catalyst
+    "api"(project(":core-common"))
     "include"(project(":core-common"))
 
     // Kotlin
@@ -54,11 +54,6 @@ dependencies {
 
 configure<LoomGradleExtensionAPI> {
     silentMojangMappingsLicense()
-}
-
-configure<ArchitectPluginExtension> {
-    platformSetupLoomIde()
-    fabric()
 }
 
 tasks {

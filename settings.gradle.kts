@@ -41,5 +41,5 @@ fun includeProject(name: String) {
 // Core
 includeProject(":core:common")
 includeProject(":core:paper")
-includeProject(":core:velocity")
 includeProject(":core:fabric")
+includeProject(":core:velocity")

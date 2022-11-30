@@ -15,19 +15,28 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+package dev.koding.catalyst.core.paper.loader
 
-package dev.koding.catalyst.core.common.injection.module
+import org.bukkit.plugin.java.JavaPlugin
+import org.kodein.di.DI
+import org.kodein.di.bind
+import org.kodein.di.delegate
+import org.kodein.di.instance
+import org.kodein.di.singleton
 
-import dev.koding.catalyst.core.common.injection.component.Injectable
+object PaperLoaderModule {
+    fun of(plugin: PaperLoader) = DI.Module("PluginPaper-${plugin::class.java.name}") {
+        // Plugin binding
+        bind { instance(plugin) }
+        delegate<JavaPlugin>().to<PaperLoader>()
 
-/**
- * We provide a dummy module to all platform plugins since - without it -
- * Guice will complain about not having any [Injectable]s bound.
- */
-object DummyModule : Module() {
-    override fun configure() {
-        multibind<Injectable>(DummyComponent)
+        // Config
+        bind { instance(plugin.config) }
+
+        // Server
+        bind { instance(plugin.server) }
+
+        // Components
+        bind { singleton { PaperComponentBootstrap(instance()) } }
     }
 }
-
-object DummyComponent : Injectable

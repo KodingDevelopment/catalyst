@@ -15,22 +15,18 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package dev.koding.catalyst.core.common.external.file
 
-import com.google.inject.assistedinject.FactoryModuleBuilder
-import dev.koding.catalyst.core.common.injection.module.Module
-
-class FileModule : Module() {
-    override fun configure() {
-        install(
-            FactoryModuleBuilder()
-                .implement(ExternalFile::class.java, ExternalFile::class.java)
-                .build(ExternalFileFactory::class.java)
-        )
-    }
-}
-
-interface ExternalFileFactory {
-    fun create(name: String): ExternalFile
-}
+// class FileModule : Module() {
+//    override fun configure() {
+//        install(
+//            FactoryModuleBuilder()
+//                .implement(ExternalFile::class.java, ExternalFile::class.java)
+//                .build(ExternalFileFactory::class.java)
+//        )
+//    }
+// }
+//
+// interface ExternalFileFactory {
+//    fun create(name: String): ExternalFile
+// }

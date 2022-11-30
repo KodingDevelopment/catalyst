@@ -15,39 +15,27 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+package dev.koding.catalyst.core.paper.loader
 
-package dev.koding.catalyst.core.paper.plugin
-
-import com.google.inject.AbstractModule
-import com.google.inject.Inject
-import com.google.inject.Injector
-import dev.koding.catalyst.core.common.injection.module.PlatformModule
-import dev.koding.catalyst.core.common.plugin.PlatformPlugin
+import dev.koding.catalyst.core.common.loader.PlatformLoader
 import mu.KotlinLogging
 import org.bukkit.plugin.java.JavaPlugin
+import org.kodein.di.DI
 import java.nio.file.Path
 
 /**
  * Root plugin class for Paper plugins.
  */
-open class PaperPlugin(override val modules: Array<AbstractModule>) : PlatformPlugin, JavaPlugin() {
+open class PaperLoader(override val modules: Array<DI.Module>) : PlatformLoader, JavaPlugin() {
 
-    override lateinit var injector: Injector
+    constructor(block: DI.Builder.() -> Unit) : this(arrayOf(DI.Module("PaperPlugin", init = block)))
 
-    override val rootModules by lazy { arrayOf<AbstractModule>(PlatformModule(this), PaperPluginModule(this)) }
+    override lateinit var di: DI
+
+    override val rootModules by lazy { arrayOf(PaperLoaderModule.of(this)) }
     override var logger = KotlinLogging.logger(slF4JLogger)
     override var dataDirectory: Path = dataFolder.toPath()
 
-    @Inject
-    lateinit var bootstrap: PaperComponentBootstrap
-
-    override fun onEnable() {
-        enable()
-        bootstrap.enable()
-    }
-
-    override fun onDisable() {
-        bootstrap.disable()
-        disable()
-    }
+    override fun onEnable(): Unit = enable()
+    override fun onDisable(): Unit = disable()
 }

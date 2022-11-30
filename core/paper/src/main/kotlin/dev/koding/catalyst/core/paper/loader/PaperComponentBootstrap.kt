@@ -15,27 +15,30 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+package dev.koding.catalyst.core.paper.loader
 
-package dev.koding.catalyst.core.paper.plugin
-
-import com.google.inject.Inject
-import com.google.inject.Singleton
 import dev.koding.catalyst.core.common.injection.bootstrap.ComponentBootstrap
-import dev.koding.catalyst.core.common.injection.component.Injectable
 import org.bukkit.Bukkit
+import org.bukkit.event.HandlerList
 import org.bukkit.event.Listener
+import org.kodein.di.DI
+import org.kodein.di.DIAware
+import org.kodein.di.allInstances
+import org.kodein.di.direct
+import org.kodein.di.instance
 
 /**
  * Registers Listeners with the Bukkit API.
  */
-@Singleton
-class PaperComponentBootstrap @Inject constructor(
-    components: Set<Injectable>,
-    private val plugin: PaperPlugin
-) : ComponentBootstrap(components) {
+class PaperComponentBootstrap(override val di: DI) : DIAware, ComponentBootstrap {
 
-    override fun enable() {
-        super.enable()
-        bootstrap<Listener> { Bukkit.getPluginManager().registerEvents(it, plugin) }
+    private val plugin: PaperLoader by di.instance()
+
+    override fun bind() {
+        di.direct.allInstances<Listener>().forEach { Bukkit.getPluginManager().registerEvents(it, plugin) }
+    }
+
+    override fun unbind() {
+        di.direct.allInstances<Listener>().forEach { HandlerList.unregisterAll(it) }
     }
 }

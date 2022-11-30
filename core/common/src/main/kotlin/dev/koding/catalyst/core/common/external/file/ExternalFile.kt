@@ -15,27 +15,19 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package dev.koding.catalyst.core.common.external.file
 
-import com.google.inject.Inject
-import com.google.inject.assistedinject.Assisted
-import dev.koding.catalyst.core.common.injection.component.InjectionContext
-import kotlin.io.path.createDirectories
-import kotlin.io.path.createFile
-import kotlin.io.path.exists
-
-class ExternalFile @Inject constructor(
-    @Assisted name: String,
-    context: InjectionContext
-) {
-
-    // TODO: File format
-    private val file = context.dataDir.resolve(name)
-        .also {
-            // TODO: Copy file from resources
-            it.parent.createDirectories()
-            if (!it.exists()) it.createFile()
-        }
-
-}
+// class ExternalFile @Inject constructor(
+//    @Assisted name: String,
+//    context: InjectionContext
+// ) {
+//
+//    // TODO: File format
+//    private val file = context.dataDir.resolve(name)
+//        .also {
+//            // TODO: Copy file from resources
+//            it.parent.createDirectories()
+//            if (!it.exists()) it.createFile()
+//        }
+//
+// }

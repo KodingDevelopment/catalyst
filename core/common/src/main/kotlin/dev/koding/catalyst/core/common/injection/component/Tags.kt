@@ -15,35 +15,8 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package dev.koding.catalyst.core.common.injection.component
 
-import com.google.inject.Inject
-import dev.misfitlabs.kotlinguice4.getInstance
-
-open class Contextual : Injectable {
-
-    @Inject
-    lateinit var context: InjectionContext
-
-    /**
-     * Get an instance of the given type from the current context.
-     */
-    protected inline fun <reified T : Injectable> get(): T = context.plugin.injector.getInstance()
-
-    /**
-     * Get an instance of the given type from the given context.
-     *
-     * @param clazz the class to get an instance of
-     */
-    protected fun <T : Injectable> get(clazz: Class<T>): T = context.plugin.injector.getInstance(clazz)
-
-    /**
-     * Return a data file for the given name.
-     *
-     * @param name the name of the file
-     * @return the data file
-     */
-    protected fun file(name: String) = lazy { context.fileManager[name] }
-
+object Tags {
+    const val DATA_DIRECTORY = "dataDirectory"
 }

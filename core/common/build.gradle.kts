@@ -18,11 +18,16 @@
 
 dependencies {
     // Logging
-    shadow("org.slf4j:slf4j-api:2.0.3")
+    shadow("org.slf4j:slf4j-api:2.0.4")
     shadow("io.github.microutils:kotlin-logging-jvm:3.0.4")
 
     // Injection
-    shadow("com.google.inject:guice:5.1.0")
-    shadow("com.google.inject.extensions:guice-assistedinject:5.1.0")
-    shadow("dev.misfitlabs.kotlinguice4:kotlin-guice:1.6.0")
+    shadow("org.kodein.di:kodein-di:7.16.0")
+    shadow("org.kodein.di:kodein-di-jxinject-jvm:7.16.0")
+}
+
+configurations {
+    "api" {
+        isCanBeConsumed = true
+    }
 }

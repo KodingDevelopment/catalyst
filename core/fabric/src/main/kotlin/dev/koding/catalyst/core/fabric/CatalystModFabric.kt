@@ -15,14 +15,11 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package dev.koding.catalyst.core.fabric
 
-import net.fabricmc.api.ModInitializer
+import dev.koding.catalyst.core.fabric.loader.FabricLoader
 
 @Suppress("unused")
-object CatalystModFabric : ModInitializer {
-    override fun onInitialize() {
-        println("aha goo morning wassup")
-    }
-}
+object CatalystModFabric : FabricLoader("catalyst", {
+    println("yea")
+})

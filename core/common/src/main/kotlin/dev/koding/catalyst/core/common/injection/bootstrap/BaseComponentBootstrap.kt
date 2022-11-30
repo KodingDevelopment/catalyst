@@ -15,12 +15,13 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package dev.koding.catalyst.core.common.injection.bootstrap
 
-import com.google.inject.Inject
 import dev.koding.catalyst.core.common.injection.component.Bootstrap
-import dev.koding.catalyst.core.common.injection.component.Injectable
+import org.kodein.di.DI
+import org.kodein.di.DIAware
+import org.kodein.di.allInstances
+import org.kodein.di.direct
 
 /**
  * Base class for implementations to automatically register their platform specific components to
@@ -28,27 +29,17 @@ import dev.koding.catalyst.core.common.injection.component.Injectable
  *
  * For example - registering command listeners on Bukkit.
  */
-open class ComponentBootstrap @Inject constructor(val components: Set<Injectable>) : Bootstrap {
-    override val priority = Int.MAX_VALUE
-
-    override fun enable() {
-        get<Bootstrap>().sortedByDescending { it.priority }.forEach { it.enable() }
+class BaseComponentBootstrap(override val di: DI) : DIAware, ComponentBootstrap {
+    override fun bind() {
+        di.direct.allInstances<Bootstrap>().sortedByDescending { it.priority }.forEach { it.enable() }
     }
 
-    override fun disable() {
-        get<Bootstrap>().sortedByDescending { it.priority }.forEach { it.disable() }
+    override fun unbind() {
+        di.direct.allInstances<Bootstrap>().sortedBy { it.priority }.forEach { it.disable() }
     }
+}
 
-    /**
-     * Runs a for loop with the given [apply] block on each component matching the given type.
-     *
-     * @param apply The block to run on each component.
-     */
-    inline fun <reified T> bootstrap(apply: (T) -> Unit) =
-        components.filterIsInstance<T>().forEach(apply)
-
-    /**
-     * Returns a list of all components matching the given type.
-     */
-    inline fun <reified T> get(): List<T> = components.filterIsInstance<T>()
+interface ComponentBootstrap {
+    fun bind()
+    fun unbind()
 }

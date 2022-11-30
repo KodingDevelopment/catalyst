@@ -15,28 +15,33 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+package dev.koding.catalyst.core.common.injection
 
-package dev.koding.catalyst.core.paper
-
-import dev.koding.catalyst.core.common.injection.component.Bootstrap
+import dev.koding.catalyst.core.common.injection.component.Tags
 import dev.koding.catalyst.core.common.loader.PlatformLoader
-import dev.koding.catalyst.core.paper.loader.PaperLoader
+import mu.KLogger
 import org.kodein.di.DI
-import org.kodein.di.DIAware
 import org.kodein.di.bind
+import org.kodein.di.delegate
 import org.kodein.di.instance
+import org.kodein.di.registerContextFinder
 import org.kodein.di.singleton
+import org.slf4j.Logger
 
-@Suppress("unused")
-class CatalystPlugin : PaperLoader({
-    bind { singleton { Test(instance()) } }
-})
+object PluginModule {
+    fun of(plugin: PlatformLoader) = DI.Module("PluginBase-${plugin::class.java.name}") {
+        // Register context
+        registerContextFinder { plugin }
 
-class Test(override val di: DI) : DIAware, Bootstrap {
-    private val plugin by instance<PlatformLoader>()
+        // Bind DI instance
+        bind { singleton { plugin.di } }
+        bind { instance(plugin) }
 
-    override fun enable() {
-        println("its alive")
-        println(plugin.dataDirectory)
+        // Logger
+        bind { instance(plugin.logger) }
+        delegate<Logger>().to<KLogger>()
+
+        // Data directory
+        bind(tag = Tags.DATA_DIRECTORY) { instance(plugin.dataDirectory) }
     }
 }

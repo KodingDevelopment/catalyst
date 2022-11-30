@@ -15,23 +15,19 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package dev.koding.catalyst.core.common.external.file
 
-import com.google.inject.Inject
-import com.google.inject.Singleton
-
-@Singleton
-class FileManager @Inject constructor(
-    private val factory: ExternalFileFactory
-) {
-
-    /**
-     * Returns a file with the given name.
-     *
-     * @param name The name of the file.
-     * @return The file.
-     */
-    operator fun get(name: String) = factory.create(name)
-
-}
+// @Singleton
+// class FileManager @Inject constructor(
+//    private val factory: ExternalFileFactory
+// ) {
+//
+//    /**
+//     * Returns a file with the given name.
+//     *
+//     * @param name The name of the file.
+//     * @return The file.
+//     */
+//    operator fun get(name: String) = factory.create(name)
+//
+// }

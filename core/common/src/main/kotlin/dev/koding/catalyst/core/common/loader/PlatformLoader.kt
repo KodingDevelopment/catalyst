@@ -15,32 +15,33 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+package dev.koding.catalyst.core.common.loader
 
-package dev.koding.catalyst.core.common.plugin
-
-import com.google.inject.AbstractModule
-import com.google.inject.Guice
-import com.google.inject.Injector
-import dev.koding.catalyst.core.common.injection.component.Bootstrap
-import dev.koding.catalyst.core.common.injection.module.DummyModule
+import dev.koding.catalyst.core.common.injection.PluginModule
+import dev.koding.catalyst.core.common.injection.bootstrap.ComponentBootstrap
 import mu.KLogger
+import org.kodein.di.DI
+import org.kodein.di.DIAware
+import org.kodein.di.allInstances
+import org.kodein.di.direct
+import org.kodein.di.jxinject.jxInjectorModule
 import java.nio.file.Path
 import kotlin.system.measureTimeMillis
 
-interface PlatformPlugin : Bootstrap {
+interface PlatformLoader : DIAware {
 
     /**
      * Root modules are used to provide the base bindings for the injector.
      * They are always loaded first, and should only be overridden by the platform
      * implementation and not by the plugin.
      */
-    val rootModules get() = arrayOf<AbstractModule>()
+    val rootModules get() = arrayOf<DI.Module>()
 
     /**
      * Plugin-provided modules are loaded after the root modules, and are used to
      * provide the plugin's bindings.
      */
-    val modules: Array<AbstractModule>
+    val modules: Array<DI.Module>
 
     // TODO: Config and data directory
 
@@ -48,7 +49,7 @@ interface PlatformPlugin : Bootstrap {
      * The injector used to provide the plugin's bindings. Since we're in an interface,
      * we can't use lateinit, so we have to use a getter and setter.
      */
-    var injector: Injector
+    override var di: DI
 
     /**
      * The logger used by the plugin.
@@ -60,21 +61,29 @@ interface PlatformPlugin : Bootstrap {
      */
     var dataDirectory: Path
 
-    // TODO: Injection context
-    override fun enable() {
+    fun enable() {
         try {
             logger.info { "Starting injection" }
+
             val duration = measureTimeMillis {
-                injector = Guice.createInjector(*modules, *rootModules, DummyModule)
-                injector.injectMembers(this)
+                di = DI {
+                    // Backwards compat
+                    import(jxInjectorModule)
+
+                    // Install modules
+                    import(PluginModule.of(this@PlatformLoader))
+                    importAll(*rootModules, *modules)
+                }
             }
 
-            // TODO: Register injection context using ClassloaderLocal (tm)
+            di.direct.allInstances<ComponentBootstrap>().forEach { it.bind() }
             logger.info { "Injection complete in ${duration}ms" }
         } catch (e: Exception) {
             logger.error(e) { "Failed to inject" }
         }
     }
 
-    // TODO: Disabling
+    fun disable() {
+        di.direct.allInstances<ComponentBootstrap>().forEach { it.unbind() }
+    }
 }
