@@ -1,3 +1,6 @@
+<!--suppress CheckImageSize -->
+<img align="left" width="80" height="80" src="core/fabric/src/main/resources/assets/catalyst/icon.png" alt="Mod logo">
+
 # catalyst
 
 A framework to streamline development of plugins for clients.
