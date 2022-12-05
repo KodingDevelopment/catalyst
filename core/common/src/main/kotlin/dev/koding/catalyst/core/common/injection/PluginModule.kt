@@ -17,6 +17,7 @@
  */
 package dev.koding.catalyst.core.common.injection
 
+import dev.koding.catalyst.core.common.injection.bootstrap.BaseComponentBootstrap
 import dev.koding.catalyst.core.common.injection.component.Tags
 import dev.koding.catalyst.core.common.loader.PlatformLoader
 import mu.KLogger
@@ -43,5 +44,8 @@ object PluginModule {
 
         // Data directory
         bind(tag = Tags.DATA_DIRECTORY) { instance(plugin.dataDirectory) }
+
+        // Components
+        bind { singleton { BaseComponentBootstrap(instance()) } }
     }
 }
