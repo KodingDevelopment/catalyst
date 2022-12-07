@@ -24,6 +24,10 @@ dependencies {
     // Injection
     shadow("org.kodein.di:kodein-di:7.16.0")
     shadow("org.kodein.di:kodein-di-jxinject-jvm:7.16.0")
+
+    // Coroutines
+    shadow("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+    shadow("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.6.4")
 }
 
 configurations {

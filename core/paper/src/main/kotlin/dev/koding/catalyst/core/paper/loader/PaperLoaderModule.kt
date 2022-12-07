@@ -17,12 +17,10 @@
  */
 package dev.koding.catalyst.core.paper.loader
 
+import dev.koding.catalyst.core.common.api.scheduler.Schedulers
+import dev.koding.catalyst.core.paper.api.schedulers.PaperSchedulers
 import org.bukkit.plugin.java.JavaPlugin
-import org.kodein.di.DI
-import org.kodein.di.bind
-import org.kodein.di.delegate
-import org.kodein.di.instance
-import org.kodein.di.singleton
+import org.kodein.di.*
 
 object PaperLoaderModule {
     fun of(plugin: PaperLoader) = DI.Module("PluginPaper-${plugin::class.java.name}") {
@@ -38,5 +36,8 @@ object PaperLoaderModule {
 
         // Components
         bind { singleton { PaperComponentBootstrap(instance()) } }
+
+        // API
+        bind<Schedulers>(overrides = true) { singleton { PaperSchedulers(instance()) } }
     }
 }

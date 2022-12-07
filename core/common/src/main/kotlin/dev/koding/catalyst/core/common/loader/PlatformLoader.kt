@@ -71,8 +71,8 @@ interface PlatformLoader : DIAware {
                     import(jxInjectorModule)
 
                     // Install modules
-                    import(PluginModule.of(this@PlatformLoader))
-                    importAll(*rootModules, *modules)
+                    import(PluginModule.of(this@PlatformLoader), allowOverride = true)
+                    importAll(*rootModules, *modules, allowOverride = true)
                 }
             }
 

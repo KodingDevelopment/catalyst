@@ -17,6 +17,7 @@
  */
 package dev.koding.catalyst.core.paper
 
+import dev.koding.catalyst.core.common.api.scheduler.Schedulers
 import dev.koding.catalyst.core.common.injection.component.Bootstrap
 import dev.koding.catalyst.core.common.loader.PlatformLoader
 import dev.koding.catalyst.core.paper.loader.PaperLoader
@@ -32,10 +33,16 @@ class CatalystPlugin : PaperLoader({
 })
 
 class Test(override val di: DI) : DIAware, Bootstrap {
+
     private val plugin by instance<PlatformLoader>()
+    private val schedulers by instance<Schedulers>()
 
     override fun enable() {
         println("its alive")
         println(plugin.dataDirectory)
+
+        println(schedulers)
+        schedulers.sync.schedule { println("sync") }
+        schedulers.async.schedule { println("async") }
     }
 }
