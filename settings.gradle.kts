@@ -43,3 +43,15 @@ includeProject(":core:common")
 includeProject(":core:paper")
 includeProject(":core:fabric")
 includeProject(":core:velocity")
+
+// Conventional commits & Git Hooks
+plugins {
+    id("org.danilopianini.gradle-pre-commit-git-hooks") version "1.1.0"
+}
+
+gitHooks {
+    commitMsg { conventionalCommits() }
+    preCommit { tasks("lintFix") }
+
+    createHooks(true)
+}
