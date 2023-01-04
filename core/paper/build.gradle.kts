@@ -23,6 +23,7 @@ apply(plugin = "gg.hubblemc.paper")
 dependencies {
     // Project
     shadow(project(":core-common"))
+    shadow("com.github.InnitGG:mapping-io:dfc566d20e")
 }
 
 configure<BukkitPluginDescription> {

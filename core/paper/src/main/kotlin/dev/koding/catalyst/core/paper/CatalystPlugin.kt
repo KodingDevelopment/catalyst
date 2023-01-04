@@ -17,10 +17,9 @@
  */
 package dev.koding.catalyst.core.paper
 
-import dev.koding.catalyst.core.common.api.scheduler.Schedulers
 import dev.koding.catalyst.core.common.injection.component.Bootstrap
-import dev.koding.catalyst.core.common.loader.PlatformLoader
 import dev.koding.catalyst.core.paper.loader.PaperLoader
+import dev.koding.catalyst.core.paper.util.SpigotObf
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.bind
@@ -29,20 +28,11 @@ import org.kodein.di.singleton
 
 @Suppress("unused")
 class CatalystPlugin : PaperLoader({
-    bind { singleton { Test(instance()) } }
+    bind { singleton { CoreBootstrap(instance()) } }
 })
 
-class Test(override val di: DI) : DIAware, Bootstrap {
-
-    private val plugin by instance<PlatformLoader>()
-    private val schedulers by instance<Schedulers>()
-
+class CoreBootstrap(override val di: DI) : DIAware, Bootstrap {
     override fun enable() {
-        println("its alive")
-        println(plugin.dataDirectory)
-
-        println(schedulers)
-        schedulers.sync.schedule { println("sync") }
-        schedulers.async.schedule { println("async") }
+        SpigotObf.load()
     }
 }
