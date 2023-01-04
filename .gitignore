@@ -48,3 +48,7 @@ bin
 
 !src/*/run
 !src/*/bin
+
+# ij config
+!.idea/copyright
+!.idea/icon.png
