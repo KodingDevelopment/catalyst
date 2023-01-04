@@ -44,7 +44,7 @@ fun <T : Any> Any.resolveReflectionFieldsAs(vararg names: String): T? {
 
         currentField = Reflector.getField(currentObject::class.java, fieldName)
 
-        // Check if status
+        // Check if static
         currentObject = if (currentField.modifiers and Modifier.STATIC != 0) currentField.get(null)
         else currentField.get(currentObject)
     }
@@ -54,6 +54,10 @@ fun <T : Any> Any.resolveReflectionFieldsAs(vararg names: String): T? {
 
 /**
  * Invokes a method using reflection.
+ *
+ * @param name The name of the method to invoke.
+ * @param args The arguments of the method to invoke.
+ * @return The result of the method invocation.
  */
 @Suppress("UNCHECKED_CAST", "unused")
 fun <T : Any> Any.invokeReflectionMethodAs(name: String, vararg args: Any): T? {

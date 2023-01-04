@@ -24,11 +24,15 @@ object JVM {
     private val arguments = ManagementFactory.getRuntimeMXBean().inputArguments
 
     /**
-     * Checks if the JVM has a given argument, excluding those given to the main method.
+     * Checks if the JVM has a given [argument], excluding those given to the main method.
      */
     fun hasArgument(argument: String): Boolean = arguments.contains(argument)
 }
 
+/**
+ * Check if the JVM has [arguments] for specific features (such as the [FINAL_FIELD_ACCESSIBILITY] flag) as they may be
+ * required for the program to work correctly.
+ */
 enum class OptionalFeature(private val arguments: Array<String>) {
 
     /**
