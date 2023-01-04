@@ -71,6 +71,13 @@ object Reflector {
     data class FieldMeta(val clazz: Class<*>, val name: String)
     data class MethodMeta(val clazz: Class<*>, val name: String, val parameterTypes: List<Class<*>>)
 
+    /**
+     * Gets a field from the cache or adds it to the cache if not already present.
+     *
+     * @param clazz The class to get the field from.
+     * @param name The name of the field.
+     * @return The field.
+     */
     fun getField(clazz: Class<*>, name: String): Field {
         val meta = FieldMeta(clazz, name)
         return fields.getOrPut(meta) {
@@ -79,6 +86,14 @@ object Reflector {
         }
     }
 
+    /**
+     * Gets a method from the cache or adds it to the cache if not already present.
+     *
+     * @param clazz The class to get the method from.
+     * @param name The name of the method.
+     * @param parameterTypes The parameter types of the method.
+     * @return The method.
+     */
     fun getMethod(clazz: Class<*>, name: String, vararg parameterTypes: Class<*>): Method {
         val meta = MethodMeta(clazz, name, parameterTypes.toList())
         return methods.getOrPut(meta) {

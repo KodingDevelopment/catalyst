@@ -23,27 +23,39 @@ import java.lang.management.ManagementFactory
 object JVM {
     private val arguments = ManagementFactory.getRuntimeMXBean().inputArguments
 
+    /**
+     * Checks if the JVM has a given argument, excluding those given to the main method.
+     */
     fun hasArgument(argument: String): Boolean = arguments.contains(argument)
 }
 
 enum class OptionalFeature(private val arguments: Array<String>) {
+
+    /**
+     * Allows changing the value of final fields at runtime.
+     */
     FINAL_FIELD_ACCESSIBILITY(arrayOf("--add-opens=java.base/java.lang.reflect=ALL-UNNAMED"));
 
     private val logger = KotlinLogging.logger { }
     private var warned = false
 
+    /**
+     * Checks if the feature is available.
+     *
+     * @return True if the feature is available, false otherwise.
+     */
     fun isAvailable(): Boolean = arguments.all { JVM.hasArgument(it) }.also { if (!it) printWarning() }
 
+    /**
+     * Prints a warning if the feature is not available.
+     */
     private fun printWarning() {
         if (warned) return
         warned = true
 
+        val suggestedArguments = arguments.joinToString(" ")
         logger.warn {
-            "Optional feature $this is not available. Please add the following arguments to your JVM: ${
-            arguments.joinToString(
-                " "
-            )
-            }"
+            "Optional feature $this is not available. Please add the following arguments to your JVM: $suggestedArguments"
         }
     }
 }

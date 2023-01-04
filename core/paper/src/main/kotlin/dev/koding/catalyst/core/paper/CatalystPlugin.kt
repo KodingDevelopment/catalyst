@@ -32,7 +32,5 @@ class CatalystPlugin : PaperLoader({
 })
 
 class CoreBootstrap(override val di: DI) : DIAware, Bootstrap {
-    override fun enable() {
-        SpigotObf.load()
-    }
+    override fun enable(): Unit = SpigotObf.load()
 }

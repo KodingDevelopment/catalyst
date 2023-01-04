@@ -54,15 +54,13 @@ fun <T : Any> Any.resolveReflectionFieldsAs(vararg names: String): T? {
 
 /**
  * Invokes a method using reflection.
- *
- * TODO: Support args
  */
 @Suppress("UNCHECKED_CAST", "unused")
-fun <T : Any> Any.invokeReflectionMethodAs(name: String): T? {
+fun <T : Any> Any.invokeReflectionMethodAs(name: String, vararg args: Any): T? {
     val methodName = SpigotObf.getClassSpigot(this::class.java.name)
         ?.methods?.firstOrNull { it.name.mojang == name }?.name?.spigot
         ?: name
 
     val method = Reflector.getMethod(this::class.java, methodName)
-    return method.invoke(this) as? T
+    return method.invoke(this, args) as? T
 }
