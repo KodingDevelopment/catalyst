@@ -15,7 +15,6 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package dev.koding.catalyst.core.paper.api.platform.entity
 
 import dev.koding.catalyst.core.common.api.platform.entity.PlatformEntity
