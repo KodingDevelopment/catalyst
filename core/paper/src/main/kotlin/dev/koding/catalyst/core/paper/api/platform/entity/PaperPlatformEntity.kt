@@ -25,6 +25,7 @@ import net.kyori.adventure.key.Key
 import org.bukkit.entity.Entity
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
+import org.joml.Vector2f
 import org.joml.Vector3d
 import java.util.UUID
 
@@ -34,10 +35,11 @@ class PaperPlatformEntity(val ref: Entity) : PlatformEntity {
     override val id: Int get() = ref.entityId
 
     override val position: Vector3d get() = Vector3d(ref.location.x, ref.location.y, ref.location.z)
+    override val look: Vector2f get() = Vector2f(ref.location.yaw, ref.location.pitch)
     override val world: PlatformWorld get() = ref.world.wrap()
 
-    override fun teleport(position: Vector3d, world: PlatformWorld?): Boolean =
-        ref.teleport(position.asLocation(world ?: this.world))
+    override fun teleport(position: Vector3d, look: Vector2f?, world: PlatformWorld?): Boolean =
+        ref.teleport(position.asLocation(world ?: this.world, look ?: this.look))
 }
 
 internal fun Entity.wrapRaw(): PaperPlatformEntity = PaperPlatformEntity(this)

@@ -26,6 +26,7 @@ import dev.koding.catalyst.core.paper.api.platform.PaperPlatform
 import dev.koding.catalyst.core.paper.loader.PaperLoader
 import dev.koding.catalyst.core.paper.util.SpigotObf
 import mu.KLogger
+import net.kyori.adventure.text.Component
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.bind
@@ -61,6 +62,7 @@ class CoreBootstrap(override val di: DI) : DIAware, Bootstrap {
         SchedulersImpl.sync.schedule(0L, 500L) {
             PlatformServerImpl.players.forEach {
                 it.teleport(it.position.add(0.0, 0.5, 0.0))
+                it.sendMessage(Component.text("lol"))
             }
         }
     }

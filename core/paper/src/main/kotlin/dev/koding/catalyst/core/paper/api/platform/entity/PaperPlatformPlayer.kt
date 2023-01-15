@@ -19,10 +19,21 @@ package dev.koding.catalyst.core.paper.api.platform.entity
 
 import dev.koding.catalyst.core.common.api.platform.entity.PlatformLivingEntity
 import dev.koding.catalyst.core.common.api.platform.entity.PlatformPlayer
+import net.kyori.adventure.audience.Audience
+import net.kyori.adventure.text.Component
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 
-class PaperPlatformPlayer(val ref: Player) : PlatformPlayer, PlatformLivingEntity by (ref as LivingEntity).wrap()
+class PaperPlatformPlayer(val ref: Player) : PlatformLivingEntity by (ref as LivingEntity).wrap(), PlatformPlayer {
+
+    override val name: String get() = ref.name
+    override val displayName: Component get() = ref.displayName()
+
+    /*
+     * == Audience ==
+     */
+    override fun audiences(): MutableIterable<Audience> = mutableListOf(ref)
+}
 
 fun Player.wrap() = PaperPlatformPlayer(this)
 fun PlatformPlayer.unwrap() = (this as PaperPlatformPlayer).ref

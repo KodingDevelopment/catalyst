@@ -22,6 +22,7 @@ import dev.koding.catalyst.core.common.util.InvalidPlatformException
 import net.kyori.adventure.identity.Identified
 import net.kyori.adventure.identity.Identity
 import net.kyori.adventure.key.Key
+import org.joml.Vector2f
 import org.joml.Vector3d
 import java.util.UUID
 
@@ -56,6 +57,12 @@ interface PlatformEntity : Identified {
     val position: Vector3d
 
     /**
+     * Current look vector of the entity
+     * The X component is the yaw, and the Y component is the pitch
+     */
+    val look: Vector2f
+
+    /**
      * Current world of the entity
      */
     val world: PlatformWorld
@@ -64,10 +71,12 @@ interface PlatformEntity : Identified {
      * Teleports the entity to the given position
      *
      * @param position The position to teleport to
-     * @param world The world to teleport to
+     * @param look The look vector to teleport to, if null the entity's current look vector will be used
+     * @param world The world to teleport to, if null the entity's current world will be used
      * @return True if the teleport was successful
      */
-    fun teleport(position: Vector3d, world: PlatformWorld? = null): Boolean = throw InvalidPlatformException()
+    fun teleport(position: Vector3d, look: Vector2f? = null, world: PlatformWorld? = null): Boolean =
+        throw InvalidPlatformException()
 
     /*
      * == Identified ==

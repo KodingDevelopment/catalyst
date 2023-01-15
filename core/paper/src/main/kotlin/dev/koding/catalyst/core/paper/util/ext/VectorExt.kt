@@ -20,11 +20,13 @@ package dev.koding.catalyst.core.paper.util.ext
 import dev.koding.catalyst.core.common.api.platform.world.PlatformWorld
 import dev.koding.catalyst.core.paper.api.platform.world.unwrap
 import org.bukkit.Location
+import org.joml.Vector2f
 import org.joml.Vector3d
 
 /**
  * Converts a [Vector3d] to a [Location] in the given [PlatformWorld].
  *
  * @param world The world to convert to
+ * @param look the look vector to use for the location
  */
-fun Vector3d.asLocation(world: PlatformWorld): Location = Location(world.unwrap(), x, y, z)
+fun Vector3d.asLocation(world: PlatformWorld, look: Vector2f? = null): Location = Location(world.unwrap(), x, y, z, look?.x ?: 0f, look?.y ?: 0f)

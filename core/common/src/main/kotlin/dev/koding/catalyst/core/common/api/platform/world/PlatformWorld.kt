@@ -81,7 +81,7 @@ interface PlatformWorld {
      * @return The block at the given position, or null if it is outside the world bounds.
      */
     fun getBlock(x: Int, y: Int, z: Int): PlatformBlock? =
-        getChunk(x shr 4, z shr 4)?.getBlock(x and 15, y, z and 15)
+        getChunk(x shr 4, z shr 4)?.getBlock(x and 0xF, y, z and 0xF)
 
     /**
      * Sets the block type at the given position in the world.
@@ -92,5 +92,5 @@ interface PlatformWorld {
      * @param metadata The metadata of the block.
      */
     fun setBlock(x: Int, y: Int, z: Int, metadata: BlockMetadata) =
-        getChunk(x shr 4, z shr 4)?.setBlock(x and 15, y, z and 15, metadata)
+        getChunk(x shr 4, z shr 4)?.setBlock(x and 0xF, y, z and 0xF, metadata)
 }
