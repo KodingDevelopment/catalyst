@@ -1,6 +1,6 @@
 /*
  * Catalyst - Minecraft plugin development toolkit
- * Copyright (C) 2022  Koding Development
+ * Copyright (C) 2023  Koding Development
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -16,31 +16,19 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-dependencies {
-    // Logging
-    shadow("org.slf4j:slf4j-api:2.0.7")
-    shadow("io.github.microutils:kotlin-logging-jvm:3.0.5")
+package dev.koding.catalyst.core.common.api.platform.sided
 
-    // Injection
-    shadow("org.kodein.di:kodein-di:7.20.1")
-    shadow("org.kodein.di:kodein-di-jxinject-jvm:7.20.1")
+import dev.koding.catalyst.core.common.api.platform.InstanceBinding
 
-    // Coroutines
-    shadow("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
-    shadow("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.6.4")
-
-    // Serialization
-    shadow("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
-
-    // Math
-    shadow("org.joml:joml:1.10.5")
-
-    // Adventure
-    shadow("net.kyori:adventure-api:4.12.0")
+/**
+ * The platform server class provides server specific implementations of the API.
+ * We try to keep as much in the commons module as possible, but some things are
+ * only available on the server.
+ *
+ * @author Koding
+ */
+interface PlatformClient {
+    companion object : InstanceBinding<PlatformClient>()
 }
 
-configurations {
-    "api" {
-        isCanBeConsumed = true
-    }
-}
+object PlatformClientImpl : PlatformClient by PlatformClient.instance!!
