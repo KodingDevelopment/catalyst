@@ -81,5 +81,5 @@ interface PlatformChunk {
      * @param block The block to set.
      * @throws IllegalArgumentException If the block is not within the bounds of the chunk.
      */
-    fun setBlock(x: Int, y: Int, z: Int, block: PlatformBlock)
+    fun setBlock(x: Int, y: Int, z: Int, block: BlockMetadata)
 }

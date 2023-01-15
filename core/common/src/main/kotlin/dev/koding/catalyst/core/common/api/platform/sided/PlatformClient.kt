@@ -17,7 +17,7 @@
  */
 package dev.koding.catalyst.core.common.api.platform.sided
 
-import dev.koding.catalyst.core.common.api.platform.InstanceBinding
+import dev.koding.catalyst.core.common.api.platform.PlatformBinding
 
 /**
  * The platform server class provides server specific implementations of the API.
@@ -27,7 +27,7 @@ import dev.koding.catalyst.core.common.api.platform.InstanceBinding
  * @author Koding
  */
 interface PlatformClient {
-    companion object : InstanceBinding<PlatformClient>()
+    companion object : PlatformBinding<PlatformClient>()
 }
 
 object PlatformClientImpl : PlatformClient by PlatformClient.instance!!

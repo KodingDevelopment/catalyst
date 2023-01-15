@@ -15,25 +15,22 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package dev.koding.catalyst.core.common.api.platform.sided
+package dev.koding.catalyst.core.paper.api.platform
 
-import dev.koding.catalyst.core.common.api.platform.PlatformBinding
-import dev.koding.catalyst.core.common.api.platform.world.PlatformWorld
+import dev.koding.catalyst.core.common.api.platform.Platform
+import dev.koding.catalyst.core.common.api.platform.sided.PlatformServer
+import dev.koding.catalyst.core.common.api.scheduler.Schedulers
+import dev.koding.catalyst.core.paper.api.platform.sided.PaperPlatformServer
+import dev.koding.catalyst.core.paper.api.schedulers.PaperSchedulers
+import org.kodein.di.DI
 
 /**
- * The platform server class provides server specific implementations of the API.
- * We try to keep as much in the commons module as possible, but some things are
- * only available on the server.
+ * Implementation of the Paper API on top of the Catalyst API.
+ * This is the entry point for the Paper platform.
  *
- * @author Koding
+ * @param di The dependency injection container.
  */
-interface PlatformServer {
-    companion object : PlatformBinding<PlatformServer>()
-
-    /**
-     * A list of all worlds on the server.
-     */
-    val worlds: List<PlatformWorld> get() = emptyList()
+class PaperPlatform(private val di: DI) : Platform {
+    override val server: PlatformServer = PaperPlatformServer()
+    override val schedulers: Schedulers = PaperSchedulers(di)
 }
-
-object PlatformServerImpl : PlatformServer by PlatformServer.instance!!

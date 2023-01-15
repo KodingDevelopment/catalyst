@@ -15,25 +15,35 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package dev.koding.catalyst.core.common.api.platform.sided
+package dev.koding.catalyst.core.paper.api.platform.world
 
-import dev.koding.catalyst.core.common.api.platform.PlatformBinding
+import dev.koding.catalyst.core.common.api.platform.world.PlatformChunk
 import dev.koding.catalyst.core.common.api.platform.world.PlatformWorld
+import org.bukkit.World
 
 /**
- * The platform server class provides server specific implementations of the API.
- * We try to keep as much in the commons module as possible, but some things are
- * only available on the server.
- *
- * @author Koding
+ * Implementation for a Paper world.
  */
-interface PlatformServer {
-    companion object : PlatformBinding<PlatformServer>()
+class PaperPlatformWorld(val ref: World) : PlatformWorld {
+
+    override val name: String get() = ref.name
+    override val minY: Int get() = ref.minHeight
+    override val maxY: Int get() = ref.maxHeight
 
     /**
-     * A list of all worlds on the server.
+     * Get a chunk at the given chunk coordinates, this will never
+     * return null as Paper generates chunks on demand.
      */
-    val worlds: List<PlatformWorld> get() = emptyList()
+    override fun getChunk(x: Int, z: Int): PlatformChunk =
+        ref.getChunkAt(x, z).wrap(this)
 }
 
-object PlatformServerImpl : PlatformServer by PlatformServer.instance!!
+/**
+ * Wraps a Paper world into a Catalyst world.
+ */
+fun World.wrap(): PaperPlatformWorld = PaperPlatformWorld(this)
+
+/**
+ * Unwraps a Catalyst world into a Paper world.
+ */
+fun PlatformWorld.unwrap(): World = (this as PaperPlatformWorld).ref

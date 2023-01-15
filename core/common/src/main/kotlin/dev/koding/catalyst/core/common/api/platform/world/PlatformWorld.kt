@@ -32,6 +32,11 @@ package dev.koding.catalyst.core.common.api.platform.world
 interface PlatformWorld {
 
     /**
+     * The name of the world.
+     */
+    val name: String?
+
+    /**
      * The minimum y coordinate of the world. Defaults to 0.
      */
     val minY: Int get() = 0

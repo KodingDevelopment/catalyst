@@ -15,25 +15,17 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package dev.koding.catalyst.core.common.api.platform.sided
+package dev.koding.catalyst.core.paper.api.platform.sided
 
-import dev.koding.catalyst.core.common.api.platform.PlatformBinding
+import dev.koding.catalyst.core.common.api.platform.sided.PlatformServer
 import dev.koding.catalyst.core.common.api.platform.world.PlatformWorld
+import dev.koding.catalyst.core.paper.api.platform.world.wrap
+import org.bukkit.Bukkit
 
 /**
- * The platform server class provides server specific implementations of the API.
- * We try to keep as much in the commons module as possible, but some things are
- * only available on the server.
- *
- * @author Koding
+ * Implementation of the Paper API on top of the Catalyst API.
  */
-interface PlatformServer {
-    companion object : PlatformBinding<PlatformServer>()
-
-    /**
-     * A list of all worlds on the server.
-     */
-    val worlds: List<PlatformWorld> get() = emptyList()
+class PaperPlatformServer : PlatformServer {
+    override val worlds: List<PlatformWorld>
+        get() = Bukkit.getWorlds().map { it.wrap() }
 }
-
-object PlatformServerImpl : PlatformServer by PlatformServer.instance!!

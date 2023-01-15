@@ -15,25 +15,16 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package dev.koding.catalyst.core.common.api.platform.sided
+package dev.koding.catalyst.core.common.util.ext
 
-import dev.koding.catalyst.core.common.api.platform.PlatformBinding
-import dev.koding.catalyst.core.common.api.platform.world.PlatformWorld
+import mu.KLogger
+import kotlin.system.measureTimeMillis
 
 /**
- * The platform server class provides server specific implementations of the API.
- * We try to keep as much in the commons module as possible, but some things are
- * only available on the server.
+ * Logs the time taken to execute a block of code.
  *
- * @author Koding
+ * @param log Executes after the block of code has been executed and is
+ *            passed the time taken to execute the block of code.
+ * @param block The block of code to execute.
  */
-interface PlatformServer {
-    companion object : PlatformBinding<PlatformServer>()
-
-    /**
-     * A list of all worlds on the server.
-     */
-    val worlds: List<PlatformWorld> get() = emptyList()
-}
-
-object PlatformServerImpl : PlatformServer by PlatformServer.instance!!
+fun KLogger.logExecutionTime(log: KLogger.(Long) -> Unit, block: () -> Unit): Unit = log(measureTimeMillis(block))

@@ -33,25 +33,25 @@ import dev.koding.catalyst.core.common.util.InvalidPlatformException
  */
 interface Platform {
 
-    companion object : InstanceBinding<Platform>()
+    companion object : PlatformBinding<Platform>()
 
     /**
      * Static binding for the PlatformServer class, which is used to provide
      * server specific implementations of the API.
      */
-    val server: PlatformServer get() = throw InvalidPlatformException()
+    val server: PlatformServer? get() = null
 
     /**
      * Static binding for the PlatformClient class, which is used to provide
      * client specific implementations of the API.
      */
-    val client: PlatformClient get() = throw InvalidPlatformException()
+    val client: PlatformClient? get() = null
 
     /**
      * Platform commons, which are used to provide common implementations of the API.
      * This is used to provide implementations that are not specific to the server or client.
      */
-    val common: PlatformCommon get() = throw InvalidPlatformException()
+    val common: PlatformCommon? get() = null
 
     /**
      * Static binding for the PlatformScheduler class, equivalent to the
@@ -66,9 +66,9 @@ interface Platform {
         instance = this
 
         // Bind platform
-        PlatformServer.instance = server
-        PlatformClient.instance = client
-        PlatformCommon.instance = common
+        server?.also { PlatformServer.instance = it }
+        client?.also { PlatformClient.instance = it }
+        common?.also { PlatformCommon.instance = it }
     }
 }
 
@@ -93,9 +93,9 @@ object SchedulersImpl : Schedulers by PlatformImpl.schedulers
  *
  * @author Koding
  */
-open class InstanceBinding<T> {
+open class PlatformBinding<T> {
     var instance: T? = null
-        get() = field ?: throw IllegalStateException("Instance not bound")
+        get() = field ?: throw InvalidPlatformException()
         set(value) {
             if (field != null) throw IllegalStateException("Instance already set")
             field = value

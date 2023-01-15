@@ -17,9 +17,14 @@
  */
 package dev.koding.catalyst.core.paper
 
+import dev.koding.catalyst.core.common.api.platform.sided.PlatformServerImpl
+import dev.koding.catalyst.core.common.api.platform.world.BlockMetadata
 import dev.koding.catalyst.core.common.injection.component.Bootstrap
+import dev.koding.catalyst.core.common.util.ext.logExecutionTime
+import dev.koding.catalyst.core.paper.api.platform.PaperPlatform
 import dev.koding.catalyst.core.paper.loader.PaperLoader
 import dev.koding.catalyst.core.paper.util.SpigotObf
+import mu.KLogger
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.bind
@@ -32,5 +37,24 @@ class CatalystPlugin : PaperLoader({
 })
 
 class CoreBootstrap(override val di: DI) : DIAware, Bootstrap {
-    override fun enable(): Unit = SpigotObf.load()
+
+    override val priority: Int = Int.MAX_VALUE
+
+    private val logger by instance<KLogger>()
+
+    override fun enable() {
+        // Initialize the paper platform
+        logger.logExecutionTime({ info { "Loaded platform in ${it}ms" } }) { PaperPlatform(di).init() }
+
+        // Load obfuscation mappings
+        logger.logExecutionTime({ info { "Loaded obfuscation mappings in ${it}ms" } }) { SpigotObf.load() }
+
+        PlatformServerImpl.worlds.forEach {
+            println(it.name)
+            val chunk = it.getChunk(0, 0) ?: return@forEach
+            for (i in it.minY..it.maxY) {
+                chunk.setBlock(0, i, 0, BlockMetadata.AIR)
+            }
+        }
+    }
 }

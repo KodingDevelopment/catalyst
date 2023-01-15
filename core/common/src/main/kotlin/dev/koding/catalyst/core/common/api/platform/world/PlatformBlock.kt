@@ -25,6 +25,10 @@ import org.joml.Vector3i
  * Its type is a "BlockMetadata" object which contains its type and properties.
  */
 interface PlatformBlock {
+    /**
+     * Backreference to the chunk this block is in.
+     */
+    val chunk: PlatformChunk
 
     /**
      * The type of the block.
@@ -58,5 +62,10 @@ data class BlockPos(val world: PlatformWorld, val pos: Vector3i) {
  */
 data class BlockMetadata(
     val type: Key,
-    val properties: Map<String, String>
-)
+    val properties: Map<String, String> = emptyMap()
+) {
+    companion object {
+        @JvmStatic
+        val AIR = BlockMetadata(Key.key("minecraft", "air"))
+    }
+}
