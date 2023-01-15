@@ -15,7 +15,6 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
 package dev.koding.catalyst.core.common.api.platform
 
 import dev.koding.catalyst.core.common.api.platform.sided.PlatformClient
@@ -71,7 +70,6 @@ interface Platform {
         PlatformClient.instance = client
         PlatformCommon.instance = common
     }
-
 }
 
 /**
