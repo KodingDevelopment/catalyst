@@ -17,10 +17,13 @@
  */
 package dev.koding.catalyst.core.paper.api.platform.sided
 
+import dev.koding.catalyst.core.common.api.platform.entity.PlatformPlayer
 import dev.koding.catalyst.core.common.api.platform.sided.PlatformServer
 import dev.koding.catalyst.core.common.api.platform.world.PlatformWorld
+import dev.koding.catalyst.core.paper.api.platform.entity.wrap
 import dev.koding.catalyst.core.paper.api.platform.world.wrap
 import org.bukkit.Bukkit
+import java.util.UUID
 
 /**
  * Implementation of the Paper API on top of the Catalyst API.
@@ -28,4 +31,10 @@ import org.bukkit.Bukkit
 class PaperPlatformServer : PlatformServer {
     override val worlds: List<PlatformWorld>
         get() = Bukkit.getWorlds().map { it.wrap() }
+    override val players: List<PlatformPlayer>
+        get() = Bukkit.getOnlinePlayers().map { it.wrap() }
+
+    override fun getPlayer(name: String): PlatformPlayer? = Bukkit.getPlayer(name)?.wrap()
+    override fun getPlayer(uuid: UUID): PlatformPlayer? = Bukkit.getPlayer(uuid)?.wrap()
+    override fun getWorld(name: String): PlatformWorld? = Bukkit.getWorld(name)?.wrap()
 }

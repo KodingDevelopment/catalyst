@@ -18,7 +18,10 @@
 package dev.koding.catalyst.core.common.api.platform.sided
 
 import dev.koding.catalyst.core.common.api.platform.PlatformBinding
+import dev.koding.catalyst.core.common.api.platform.entity.PlatformPlayer
 import dev.koding.catalyst.core.common.api.platform.world.PlatformWorld
+import dev.koding.catalyst.core.common.util.InvalidPlatformException
+import java.util.UUID
 
 /**
  * The platform server class provides server specific implementations of the API.
@@ -34,6 +37,35 @@ interface PlatformServer {
      * A list of all worlds on the server.
      */
     val worlds: List<PlatformWorld> get() = emptyList()
+
+    /**
+     * A list of all players on the server.
+     */
+    val players: List<PlatformPlayer> get() = emptyList()
+
+    /**
+     * Get a player by its UUID.
+     *
+     * @param uuid The UUID of the player.
+     * @return The player, or null if it doesn't exist.
+     */
+    fun getPlayer(uuid: UUID): PlatformPlayer? = throw InvalidPlatformException()
+
+    /**
+     * Get a player by its name, ignoring case.
+     *
+     * @param name The name of the player.
+     * @return The player, or null if it doesn't exist.
+     */
+    fun getPlayer(name: String): PlatformPlayer? = throw InvalidPlatformException()
+
+    /**
+     * Get a world by its name.
+     *
+     * @param name The name of the world.
+     * @return The world, or null if it doesn't exist.
+     */
+    fun getWorld(name: String): PlatformWorld? = throw InvalidPlatformException()
 }
 
 object PlatformServerImpl : PlatformServer by PlatformServer.instance!!

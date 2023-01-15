@@ -17,6 +17,14 @@
  */
 package dev.koding.catalyst.core.common.api.platform.entity
 
+import dev.koding.catalyst.core.common.api.platform.world.PlatformWorld
+import dev.koding.catalyst.core.common.util.InvalidPlatformException
+import net.kyori.adventure.identity.Identified
+import net.kyori.adventure.identity.Identity
+import net.kyori.adventure.key.Key
+import org.joml.Vector3d
+import java.util.UUID
+
 /**
  * Abstraction for an entity, representing a living or non-living object in the world.
  * This should assume the entity is in the world in most cases, however there is a
@@ -26,4 +34,50 @@ package dev.koding.catalyst.core.common.api.platform.entity
  *
  * @author Koding
  */
-interface PlatformEntity
+interface PlatformEntity : Identified {
+    /**
+     * The type of the entity (e.g. minecraft:player)
+     */
+    val type: Key
+
+    /**
+     * The unique ID of the entity
+     */
+    val uuid: UUID
+
+    /**
+     * The entity's ID
+     */
+    val id: Int
+
+    /**
+     * Current position of the entity
+     */
+    val position: Vector3d
+
+    /**
+     * Current world of the entity
+     */
+    val world: PlatformWorld
+
+    /**
+     * Teleports the entity to the given position
+     *
+     * @param position The position to teleport to
+     * @param world The world to teleport to
+     * @return True if the teleport was successful
+     */
+    fun teleport(position: Vector3d, world: PlatformWorld? = null): Boolean = throw InvalidPlatformException()
+
+    /*
+     * == Identified ==
+     */
+    override fun identity(): Identity = Identity.identity(uuid)
+
+    class Type {
+        companion object {
+            @JvmStatic
+            val PLAYER = Key.key("minecraft", "player")
+        }
+    }
+}

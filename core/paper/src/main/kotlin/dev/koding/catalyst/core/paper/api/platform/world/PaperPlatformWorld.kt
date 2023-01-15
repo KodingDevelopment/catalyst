@@ -17,8 +17,11 @@
  */
 package dev.koding.catalyst.core.paper.api.platform.world
 
+import dev.koding.catalyst.core.common.api.platform.entity.PlatformEntity
+import dev.koding.catalyst.core.common.api.platform.entity.PlatformPlayer
 import dev.koding.catalyst.core.common.api.platform.world.PlatformChunk
 import dev.koding.catalyst.core.common.api.platform.world.PlatformWorld
+import dev.koding.catalyst.core.paper.api.platform.entity.wrap
 import org.bukkit.World
 
 /**
@@ -29,6 +32,12 @@ class PaperPlatformWorld(val ref: World) : PlatformWorld {
     override val name: String get() = ref.name
     override val minY: Int get() = ref.minHeight
     override val maxY: Int get() = ref.maxHeight
+
+    override val entities: List<PlatformEntity>
+        get() = ref.entities.map { it.wrap() }
+
+    override val players: List<PlatformPlayer>
+        get() = ref.players.map { it.wrap() }
 
     /**
      * Get a chunk at the given chunk coordinates, this will never
