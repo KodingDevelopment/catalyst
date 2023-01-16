@@ -30,9 +30,9 @@ import org.joml.Vector3d
 import java.util.UUID
 
 class PaperPlatformEntity(val ref: Entity) : PlatformEntity {
-    override val type: Key get() = ref.type.key
-    override val uuid: UUID get() = ref.uniqueId
-    override val id: Int get() = ref.entityId
+    override val type: Key = ref.type.key
+    override val uuid: UUID = ref.uniqueId
+    override val id: Int = ref.entityId
 
     override val position: Vector3d get() = Vector3d(ref.location.x, ref.location.y, ref.location.z)
     override val look: Vector2f get() = Vector2f(ref.location.yaw, ref.location.pitch)

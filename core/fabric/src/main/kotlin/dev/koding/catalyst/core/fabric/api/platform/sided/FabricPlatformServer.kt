@@ -30,16 +30,29 @@ import org.kodein.di.DIAware
 import org.kodein.di.instance
 import java.util.UUID
 
+/**
+ * The Fabric implementation of the [PlatformServer] interface.
+ */
 @Environment(EnvType.SERVER)
 class FabricPlatformServer(override val di: DI) : DIAware, PlatformServer {
+
+    companion object {
+        @JvmStatic
+        val instance: FabricPlatformServer by lazy { PlatformServer.instance as FabricPlatformServer }
+    }
+
+    /*
+     * Injected dependencies
+     */
     private val server by instance<MinecraftServer>()
-    private val audiences by instance<FabricServerAudiences>()
+
+    val audiences by instance<FabricServerAudiences>()
 
     override val worlds: List<PlatformWorld>
         get() = TODO("Worlds are not implemented on Fabric yet")
 
     override val players: List<PlatformPlayer>
-        get() = runCatching { server.playerList.players.map { it.wrap(audiences) } }
+        get() = runCatching { server.playerList.players.map { it.wrap() } }
             .getOrDefault(emptyList()) // Sometimes the playerList can be null
 
     override fun getPlayer(uuid: UUID) = players.firstOrNull { it.uuid == uuid }
@@ -47,7 +60,7 @@ class FabricPlatformServer(override val di: DI) : DIAware, PlatformServer {
     override fun getPlayer(name: String) =
         server.playerList.players
             .firstOrNull { it.name.string == name }
-            ?.wrap(audiences)
+            ?.wrap()
 
     override fun getWorld(name: String): PlatformWorld? {
         TODO("Worlds are not implemented on Fabric yet")

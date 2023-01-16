@@ -28,6 +28,9 @@ import org.joml.Vector2f
 import org.joml.Vector3d
 import java.util.UUID
 
+/**
+ * Implementation of [PlatformEntity] for Fabric.
+ */
 class FabricPlatformEntity(val ref: Entity) : PlatformEntity {
     private val entityKey = EntityType.getKey(ref.type)
     override val type = Key.key(entityKey.namespace, entityKey.path)
@@ -39,7 +42,7 @@ class FabricPlatformEntity(val ref: Entity) : PlatformEntity {
         get() = Vector3d(ref.position().x, ref.position().y, ref.position().z)
 
     override val look: Vector2f
-        get() = Vector2f(ref.lookAngle.x.toFloat(), ref.lookAngle.y.toFloat())
+        get() = Vector2f(ref.yRot, ref.xRot)
 
     override val world: PlatformWorld get() = TODO() // ref.level.wrap()
 
@@ -54,7 +57,7 @@ internal fun Entity.wrapRaw(): FabricPlatformEntity = FabricPlatformEntity(this)
 fun PlatformEntity.unwrap(): Entity = (this as FabricPlatformEntity).ref
 
 /**
- * Performs smart wrapping of a entity into a Catalyst entity of the correct type.
+ * Performs smart wrapping of an entity into a Catalyst entity of the correct type.
  */
 fun Entity.wrap(): PlatformEntity = when (this) {
     is Player -> wrap()

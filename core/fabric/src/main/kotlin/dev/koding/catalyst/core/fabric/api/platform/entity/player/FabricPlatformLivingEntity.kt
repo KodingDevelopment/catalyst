@@ -22,6 +22,9 @@ import dev.koding.catalyst.core.common.api.platform.entity.PlatformLivingEntity
 import net.minecraft.world.entity.Entity
 import net.minecraft.world.entity.LivingEntity
 
+/**
+ * Implementation of [PlatformLivingEntity] for Fabric.
+ */
 class PaperPlatformLivingEntity(val ref: LivingEntity) :
     PlatformLivingEntity,
     PlatformEntity by (ref as Entity).wrapRaw() {

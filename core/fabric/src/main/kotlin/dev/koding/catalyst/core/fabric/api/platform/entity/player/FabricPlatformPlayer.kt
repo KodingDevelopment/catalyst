@@ -19,24 +19,22 @@ package dev.koding.catalyst.core.fabric.api.platform.entity.player
 
 import dev.koding.catalyst.core.common.api.platform.entity.PlatformLivingEntity
 import dev.koding.catalyst.core.common.api.platform.entity.PlatformPlayer
+import dev.koding.catalyst.core.fabric.api.platform.sided.FabricPlatformServer
 import net.kyori.adventure.audience.Audience
-import net.kyori.adventure.platform.fabric.FabricServerAudiences
 import net.kyori.adventure.text.Component
 import net.minecraft.world.entity.LivingEntity
 import net.minecraft.world.entity.player.Player
 
-class FabricPlatformPlayer(
-    val ref: Player,
-    private val audiences: FabricServerAudiences
-) : PlatformPlayer, PlatformLivingEntity by (ref as LivingEntity).wrap() {
-    override val name: String
-        get() = ref.name.string
+/**
+ * Implementation of [PlatformPlayer] for the Fabric platform.
+ */
+class FabricPlatformPlayer(val ref: Player) : PlatformPlayer, PlatformLivingEntity by (ref as LivingEntity).wrap() {
+    override val name: String get() = ref.name.string
+    override val displayName: Component get() = ref.displayName.asComponent()
 
-    override val displayName: Component
-        get() = ref.displayName.asComponent()
-
-    override fun audiences(): MutableIterable<Audience> = mutableListOf(audiences.audience(ref))
+    override fun audiences(): MutableIterable<Audience> =
+        mutableListOf(FabricPlatformServer.instance.audiences.audience(ref))
 }
 
-fun Player.wrap(audiences: FabricServerAudiences) = FabricPlatformPlayer(this, audiences)
+fun Player.wrap() = FabricPlatformPlayer(this)
 fun PlatformPlayer.unwrap() = (this as FabricPlatformPlayer).ref
