@@ -51,7 +51,7 @@ plugins {
 
 gitHooks {
     commitMsg { conventionalCommits() }
-    preCommit { tasks("lintFix") }
+    preCommit { tasks("lint") }
 
     createHooks(true)
 }
