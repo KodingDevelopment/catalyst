@@ -38,9 +38,3 @@ dependencies {
     // Adventure
     shadow("net.kyori:adventure-api:4.12.0")
 }
-
-configurations {
-    "api" {
-        isCanBeConsumed = true
-    }
-}

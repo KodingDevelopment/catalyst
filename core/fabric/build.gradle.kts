@@ -18,8 +18,7 @@
 
 import net.fabricmc.loom.api.LoomGradleExtensionAPI
 
-apply(plugin = "dev.architectury.loom")
-apply(plugin = "io.github.juuxel.loom-quiltflower")
+apply(plugin = "quiet-fabric-loom")
 
 repositories {
     maven("https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1")
@@ -48,8 +47,7 @@ dependencies {
     "modImplementation"("net.fabricmc:fabric-language-kotlin:1.8.6+kotlin.1.7.21")
 
     // Adventure API
-    "modImplementation"("net.kyori:adventure-platform-fabric:5.5.1")
-    "include"("net.kyori:adventure-platform-fabric:5.5.1")
+    "modImplementation"("include"("net.kyori:adventure-platform-fabric:5.5.1")!!)
 
     // Mods
     "modRuntimeOnly"("me.djtheredstoner:DevAuth-fabric:1.1.0")
@@ -57,7 +55,6 @@ dependencies {
 }
 
 configure<LoomGradleExtensionAPI> {
-    silentMojangMappingsLicense()
     runConfigs {
         all {
             isIdeConfigGenerated = true

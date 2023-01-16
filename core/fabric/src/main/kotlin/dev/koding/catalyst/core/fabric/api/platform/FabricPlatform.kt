@@ -21,9 +21,19 @@ import dev.koding.catalyst.core.common.api.platform.Platform
 import dev.koding.catalyst.core.common.api.scheduler.DefaultSchedulers
 import dev.koding.catalyst.core.common.api.scheduler.Schedulers
 import dev.koding.catalyst.core.fabric.api.platform.sided.FabricPlatformServer
+import net.fabricmc.api.EnvType
+import net.fabricmc.api.Environment
 import org.kodein.di.DI
 
-class FabricPlatform(private val di: DI) : Platform {
+/**
+ * The Fabric implementation of the [Platform] interface.
+ * Fabric supports both Client and Server, so this class is used for both.
+ *
+ * @param di The dependency injection container.
+ */
+class FabricPlatform(di: DI) : Platform {
+
+    @Environment(EnvType.SERVER)
     override val server = FabricPlatformServer(di)
 
     override val schedulers: Schedulers = DefaultSchedulers
