@@ -1,6 +1,6 @@
 /*
  * Catalyst - Minecraft plugin development toolkit
- * Copyright (C) 2022  Koding Development
+ * Copyright (C) 2023  Koding Development
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -15,11 +15,16 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package dev.koding.catalyst.core.fabric
+package dev.koding.catalyst.core.fabric.api.platform
 
-import dev.koding.catalyst.core.fabric.loader.FabricLoader
+import dev.koding.catalyst.core.common.api.platform.Platform
+import dev.koding.catalyst.core.common.api.scheduler.DefaultSchedulers
+import dev.koding.catalyst.core.common.api.scheduler.Schedulers
+import dev.koding.catalyst.core.fabric.api.platform.sided.FabricPlatformServer
+import org.kodein.di.DI
 
-@Suppress("unused")
-object CatalystModFabric : FabricLoader("catalyst", {
-    println("yea")
-})
+class FabricPlatform(private val di: DI) : Platform {
+    override val server = FabricPlatformServer(di)
+
+    override val schedulers: Schedulers = DefaultSchedulers
+}

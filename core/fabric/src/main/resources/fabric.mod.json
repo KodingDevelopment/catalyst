@@ -13,10 +13,10 @@
     },
     "description": "Catalyst is a powerful, yet easy to use, framework for rapidly developing cross-platform mods.",
     "entrypoints": {
-        "main": [
+        "server": [
             {
                 "adapter": "kotlin",
-                "value": "dev.koding.catalyst.core.fabric.CatalystModFabric"
+                "value": "dev.koding.catalyst.core.fabric.CatalystMod"
             }
         ]
     },

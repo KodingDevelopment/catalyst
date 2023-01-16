@@ -19,8 +19,12 @@ package dev.koding.catalyst.core.fabric.loader
 
 import dev.koding.catalyst.core.common.loader.PlatformLoader
 import mu.KotlinLogging
-import net.fabricmc.api.ModInitializer
+import net.fabricmc.api.DedicatedServerModInitializer
+import net.fabricmc.api.EnvType
+import net.fabricmc.api.Environment
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents
 import net.fabricmc.loader.api.FabricLoader
+import net.minecraft.server.MinecraftServer
 import org.kodein.di.DI
 import java.nio.file.Path
 
@@ -28,10 +32,13 @@ import java.nio.file.Path
  * Root class for Fabric mods which implement Catalyst.
  */
 @Suppress("unused")
-open class FabricLoader(
+@Environment(EnvType.SERVER)
+open class FabricDedicatedServerLoader(
     modId: String,
     override val modules: Array<DI.Module>
-) : PlatformLoader, ModInitializer {
+) : PlatformLoader, DedicatedServerModInitializer {
+    lateinit var server: MinecraftServer
+        private set
 
     constructor(modId: String, block: DI.Builder.() -> Unit) : this(
         modId,
@@ -46,5 +53,11 @@ open class FabricLoader(
     override var logger = KotlinLogging.logger(container.metadata.name)
     override var dataDirectory: Path = FabricLoader.getInstance().configDir
 
-    override fun onInitialize(): Unit = enable()
+    override fun onInitializeServer() {
+        ServerLifecycleEvents.SERVER_STARTING.register {
+            server = it
+
+            enable()
+        }
+    }
 }

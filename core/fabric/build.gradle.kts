@@ -47,6 +47,10 @@ dependencies {
     // Kotlin
     "modImplementation"("net.fabricmc:fabric-language-kotlin:1.8.6+kotlin.1.7.21")
 
+    // Adventure API
+    "modImplementation"("net.kyori:adventure-platform-fabric:5.5.1")
+    "include"("net.kyori:adventure-platform-fabric:5.5.1")
+
     // Mods
     "modRuntimeOnly"("me.djtheredstoner:DevAuth-fabric:1.1.0")
     "modRuntimeOnly"("maven.modrinth:modmenu:4.1.1")
@@ -54,6 +58,11 @@ dependencies {
 
 configure<LoomGradleExtensionAPI> {
     silentMojangMappingsLicense()
+    runConfigs {
+        all {
+            isIdeConfigGenerated = true
+        }
+    }
 }
 
 tasks {
