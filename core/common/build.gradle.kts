@@ -31,6 +31,11 @@ dependencies {
 
     // Serialization
     shadow("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
+    shadow("org.jetbrains.kotlinx:kotlinx-serialization-protobuf:1.4.1")
+    shadow("com.google.code.gson:gson:2.8.9")
+
+    // Adventure
+    shadow("net.kyori:adventure-api:4.12.0")
 }
 
 configurations {
