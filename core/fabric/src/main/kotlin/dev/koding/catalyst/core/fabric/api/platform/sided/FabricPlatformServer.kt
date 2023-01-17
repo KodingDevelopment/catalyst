@@ -35,7 +35,6 @@ import java.util.UUID
  */
 @Environment(EnvType.SERVER)
 class FabricPlatformServer(override val di: DI) : DIAware, PlatformServer {
-
     companion object {
         @JvmStatic
         val instance: FabricPlatformServer by lazy { PlatformServer.instance as FabricPlatformServer }
@@ -51,9 +50,9 @@ class FabricPlatformServer(override val di: DI) : DIAware, PlatformServer {
     override val worlds: List<PlatformWorld>
         get() = TODO("Worlds are not implemented on Fabric yet")
 
+    @Suppress("UNNECESSARY_SAFE_CALL") // playerList can be null at early stages, despite what IntelliJ might think
     override val players: List<PlatformPlayer>
-        get() = runCatching { server.playerList.players.map { it.wrap() } }
-            .getOrDefault(emptyList()) // Sometimes the playerList can be null
+        get() = server.playerList?.players?.map { it.wrap() } ?: emptyList()
 
     override fun getPlayer(uuid: UUID) = players.firstOrNull { it.uuid == uuid }
 
