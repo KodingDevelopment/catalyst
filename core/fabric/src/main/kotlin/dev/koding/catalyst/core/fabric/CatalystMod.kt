@@ -25,6 +25,7 @@ import dev.koding.catalyst.core.fabric.api.platform.FabricPlatform
 import dev.koding.catalyst.core.fabric.loader.FabricDedicatedServerLoader
 import mu.KLogger
 import net.kyori.adventure.text.Component
+import org.joml.Vector3d
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.bind
@@ -46,9 +47,18 @@ class CoreBootstrap(override val di: DI) : DIAware, Bootstrap {
 
         SchedulersImpl.sync.schedule(0L, 500L) {
             PlatformServerImpl.players.forEach {
-                it.teleport(it.position.add(0.0, 0.5, 0.0))
-                it.sendMessage(Component.text("lol"))
+//                it.teleport(it.position.add(0.0, 0.5, 0.0))
+//                it.sendMessage(Component.text("lol"))
+
+                val feet = it.position.sub(Vector3d(0.0, 1.0, 0.0))
+                val block = it.world.getBlock(feet.x.toInt(), feet.y.toInt(), feet.z.toInt()) ?: return@forEach
+                it.sendMessage(Component.text(block.type.type.asString()))
+//                ref.getBlockState(BlockPos(x, 93, z)).block.wrap(position, this).type.type.asString()
             }
+
+//            PlatformServerImpl.worlds.forEach {
+//                println(it.getChunk(0, 0)?.getBlock(0, 30, 0))
+//            }
         }
     }
 }

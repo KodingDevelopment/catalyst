@@ -19,6 +19,7 @@ package dev.koding.catalyst.core.fabric.api.platform.entity.player
 
 import dev.koding.catalyst.core.common.api.platform.entity.PlatformEntity
 import dev.koding.catalyst.core.common.api.platform.world.PlatformWorld
+import dev.koding.catalyst.core.fabric.api.platform.world.wrap
 import net.kyori.adventure.key.Key
 import net.minecraft.world.entity.Entity
 import net.minecraft.world.entity.EntityType
@@ -44,7 +45,7 @@ class FabricPlatformEntity(val ref: Entity) : PlatformEntity {
     override val look: Vector2f
         get() = Vector2f(ref.yRot, ref.xRot)
 
-    override val world: PlatformWorld get() = TODO() // ref.level.wrap()
+    override val world: PlatformWorld get() = ref.level.wrap()
 
     override fun teleport(position: Vector3d, look: Vector2f?, world: PlatformWorld?): Boolean {
         // TODO: Use world and look

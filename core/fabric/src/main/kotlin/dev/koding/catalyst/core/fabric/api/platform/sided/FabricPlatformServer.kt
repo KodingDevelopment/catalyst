@@ -21,6 +21,7 @@ import dev.koding.catalyst.core.common.api.platform.entity.PlatformPlayer
 import dev.koding.catalyst.core.common.api.platform.sided.PlatformServer
 import dev.koding.catalyst.core.common.api.platform.world.PlatformWorld
 import dev.koding.catalyst.core.fabric.api.platform.entity.player.wrap
+import dev.koding.catalyst.core.fabric.api.platform.world.wrap
 import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
 import net.kyori.adventure.platform.fabric.FabricServerAudiences
@@ -48,20 +49,19 @@ class FabricPlatformServer(override val di: DI) : DIAware, PlatformServer {
     val audiences by instance<FabricServerAudiences>()
 
     override val worlds: List<PlatformWorld>
-        get() = TODO("Worlds are not implemented on Fabric yet")
+        get() = server.allLevels.map { it.wrap() }
 
-    @Suppress("UNNECESSARY_SAFE_CALL") // playerList can be null at early stages, despite what IntelliJ might think
+    // playerList can be null at early stages, despite what IntelliJ might think
+    @Suppress("UNNECESSARY_SAFE_CALL")
     override val players: List<PlatformPlayer>
         get() = server.playerList?.players?.map { it.wrap() } ?: emptyList()
-
-    override fun getPlayer(uuid: UUID) = players.firstOrNull { it.uuid == uuid }
 
     override fun getPlayer(name: String) =
         server.playerList.players
             .firstOrNull { it.name.string == name }
             ?.wrap()
 
-    override fun getWorld(name: String): PlatformWorld? {
-        TODO("Worlds are not implemented on Fabric yet")
-    }
+    override fun getPlayer(uuid: UUID) = players.firstOrNull { it.uuid == uuid }
+
+    override fun getWorld(name: String) = worlds.firstOrNull { it.name == name }
 }
