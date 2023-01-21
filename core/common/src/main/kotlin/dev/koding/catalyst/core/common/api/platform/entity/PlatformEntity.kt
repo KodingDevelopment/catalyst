@@ -18,7 +18,7 @@
 package dev.koding.catalyst.core.common.api.platform.entity
 
 import dev.koding.catalyst.core.common.api.platform.world.PlatformWorld
-import dev.koding.catalyst.core.common.util.InvalidPlatformException
+import dev.koding.catalyst.core.common.util.UnsupportedPlatformException
 import net.kyori.adventure.identity.Identified
 import net.kyori.adventure.identity.Identity
 import net.kyori.adventure.key.Key
@@ -76,7 +76,7 @@ interface PlatformEntity : Identified {
      * @return True if the teleport was successful
      */
     fun teleport(position: Vector3d, look: Vector2f? = null, world: PlatformWorld? = null): Boolean =
-        throw InvalidPlatformException()
+        throw UnsupportedPlatformException()
 
     /*
      * == Identified ==

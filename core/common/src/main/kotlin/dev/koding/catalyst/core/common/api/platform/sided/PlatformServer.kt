@@ -20,7 +20,7 @@ package dev.koding.catalyst.core.common.api.platform.sided
 import dev.koding.catalyst.core.common.api.platform.PlatformBinding
 import dev.koding.catalyst.core.common.api.platform.entity.PlatformPlayer
 import dev.koding.catalyst.core.common.api.platform.world.PlatformWorld
-import dev.koding.catalyst.core.common.util.InvalidPlatformException
+import dev.koding.catalyst.core.common.util.UnsupportedPlatformException
 import java.util.UUID
 
 /**
@@ -49,7 +49,7 @@ interface PlatformServer {
      * @param uuid The UUID of the player.
      * @return The player, or null if it doesn't exist.
      */
-    fun getPlayer(uuid: UUID): PlatformPlayer? = throw InvalidPlatformException()
+    fun getPlayer(uuid: UUID): PlatformPlayer? = throw UnsupportedPlatformException()
 
     /**
      * Get a player by its name, ignoring case.
@@ -57,7 +57,7 @@ interface PlatformServer {
      * @param name The name of the player.
      * @return The player, or null if it doesn't exist.
      */
-    fun getPlayer(name: String): PlatformPlayer? = throw InvalidPlatformException()
+    fun getPlayer(name: String): PlatformPlayer? = throw UnsupportedPlatformException()
 
     /**
      * Get a world by its name.
@@ -65,7 +65,7 @@ interface PlatformServer {
      * @param name The name of the world.
      * @return The world, or null if it doesn't exist.
      */
-    fun getWorld(name: String): PlatformWorld? = throw InvalidPlatformException()
+    fun getWorld(name: String): PlatformWorld? = throw UnsupportedPlatformException()
 }
 
 object PlatformServerImpl : PlatformServer by PlatformServer.instance!!

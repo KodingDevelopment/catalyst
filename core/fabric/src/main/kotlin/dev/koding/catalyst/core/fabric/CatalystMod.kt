@@ -17,48 +17,39 @@
  */
 package dev.koding.catalyst.core.fabric
 
-import dev.koding.catalyst.core.common.api.platform.SchedulersImpl
-import dev.koding.catalyst.core.common.api.platform.sided.PlatformServerImpl
 import dev.koding.catalyst.core.common.injection.component.Bootstrap
 import dev.koding.catalyst.core.common.util.ext.logExecutionTime
 import dev.koding.catalyst.core.fabric.api.platform.FabricPlatform
+import dev.koding.catalyst.core.fabric.loader.FabricClientLoader
 import dev.koding.catalyst.core.fabric.loader.FabricDedicatedServerLoader
 import mu.KLogger
-import net.kyori.adventure.text.Component
-import org.joml.Vector3d
 import org.kodein.di.DI
 import org.kodein.di.DIAware
 import org.kodein.di.bind
 import org.kodein.di.instance
 import org.kodein.di.singleton
 
-@Suppress("unused")
-object CatalystMod : FabricDedicatedServerLoader("catalyst", {
+/**
+ * Base module for both the Fabric Client and Server
+ */
+private val module = DI.Module("CatalystCoreModule") {
     bind { singleton { CoreBootstrap(instance()) } }
-})
+}
 
+@Suppress("unused")
+object CatalystModClient : FabricClientLoader("catalyst", arrayOf(module))
+
+@Suppress("unused")
+object CatalystModServer : FabricDedicatedServerLoader("catalyst", arrayOf(module))
+
+/**
+ * Initializes the Fabric platform.
+ */
 class CoreBootstrap(override val di: DI) : DIAware, Bootstrap {
     override val priority: Int = Int.MAX_VALUE
-
     private val logger by instance<KLogger>()
 
     override fun enable() {
         logger.logExecutionTime({ info { "Loaded platform in ${it}ms" } }) { FabricPlatform(di).init() }
-
-        SchedulersImpl.sync.schedule(0L, 500L) {
-            PlatformServerImpl.players.forEach {
-//                it.teleport(it.position.add(0.0, 0.5, 0.0))
-//                it.sendMessage(Component.text("lol"))
-
-                val feet = it.position.sub(Vector3d(0.0, 1.0, 0.0))
-                val block = it.world.getBlock(feet.x.toInt(), feet.y.toInt(), feet.z.toInt()) ?: return@forEach
-                it.sendMessage(Component.text(block.type.type.asString()))
-//                ref.getBlockState(BlockPos(x, 93, z)).block.wrap(position, this).type.type.asString()
-            }
-
-//            PlatformServerImpl.worlds.forEach {
-//                println(it.getChunk(0, 0)?.getBlock(0, 30, 0))
-//            }
-        }
     }
 }

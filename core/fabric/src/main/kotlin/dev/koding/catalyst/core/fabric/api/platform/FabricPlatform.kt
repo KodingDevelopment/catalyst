@@ -20,9 +20,10 @@ package dev.koding.catalyst.core.fabric.api.platform
 import dev.koding.catalyst.core.common.api.platform.Platform
 import dev.koding.catalyst.core.common.api.scheduler.DefaultSchedulers
 import dev.koding.catalyst.core.common.api.scheduler.Schedulers
+import dev.koding.catalyst.core.fabric.api.platform.sided.FabricPlatformClient
 import dev.koding.catalyst.core.fabric.api.platform.sided.FabricPlatformServer
 import net.fabricmc.api.EnvType
-import net.fabricmc.api.Environment
+import net.fabricmc.loader.api.FabricLoader
 import org.kodein.di.DI
 
 /**
@@ -33,8 +34,23 @@ import org.kodein.di.DI
  */
 class FabricPlatform(di: DI) : Platform {
 
-    @Environment(EnvType.SERVER)
-    override val server = FabricPlatformServer(di)
+    /**
+     * Creates a [FabricPlatformClient] if the current environment is a client, otherwise null.
+     */
+    override val client by lazy {
+        if (FabricLoader.getInstance().environmentType == EnvType.CLIENT) {
+            FabricPlatformClient(di)
+        } else null
+    }
+
+    /**
+     * Creates a [FabricPlatformServer] if the current environment is a server, otherwise null.
+     */
+    override val server by lazy {
+        if (FabricLoader.getInstance().environmentType == EnvType.SERVER) {
+            FabricPlatformServer(di)
+        } else null
+    }
 
     override val schedulers: Schedulers = DefaultSchedulers
 }

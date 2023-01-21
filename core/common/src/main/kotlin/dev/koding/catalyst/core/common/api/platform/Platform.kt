@@ -21,7 +21,7 @@ import dev.koding.catalyst.core.common.api.platform.sided.PlatformClient
 import dev.koding.catalyst.core.common.api.platform.sided.PlatformCommon
 import dev.koding.catalyst.core.common.api.platform.sided.PlatformServer
 import dev.koding.catalyst.core.common.api.scheduler.Schedulers
-import dev.koding.catalyst.core.common.util.InvalidPlatformException
+import dev.koding.catalyst.core.common.util.UnsupportedPlatformException
 
 /**
  * The platform class instantiates all the necessary APIs for the given platform.
@@ -95,7 +95,7 @@ object SchedulersImpl : Schedulers by PlatformImpl.schedulers
  */
 open class PlatformBinding<T> {
     var instance: T? = null
-        get() = field ?: throw InvalidPlatformException()
+        get() = field ?: throw UnsupportedPlatformException()
         set(value) {
             if (field != null) throw IllegalStateException("Instance already set")
             field = value

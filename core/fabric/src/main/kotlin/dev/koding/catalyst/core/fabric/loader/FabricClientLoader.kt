@@ -1,6 +1,6 @@
 /*
  * Catalyst - Minecraft plugin development toolkit
- * Copyright (C) 2022  Koding Development
+ * Copyright (C) 2023  Koding Development
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -17,25 +17,23 @@
  */
 package dev.koding.catalyst.core.fabric.loader
 
-import net.fabricmc.api.DedicatedServerModInitializer
+import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents
-import net.kyori.adventure.platform.fabric.FabricServerAudiences
-import net.minecraft.server.MinecraftServer
+import net.kyori.adventure.platform.fabric.FabricClientAudiences
 import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.instance
 
 /**
- * Root class for Fabric server mods which implement Catalyst.
+ * Root class for Fabric client mods which implement Catalyst.
  */
 @Suppress("unused")
-@Environment(EnvType.SERVER)
-open class FabricDedicatedServerLoader(
+@Environment(EnvType.CLIENT)
+open class FabricClientLoader(
     modId: String,
     modules: Array<DI.Module>
-) : FabricLoaderBase(modId, modules), DedicatedServerModInitializer {
+) : FabricLoaderBase(modId, modules), ClientModInitializer {
 
     companion object {
         /**
@@ -44,13 +42,10 @@ open class FabricDedicatedServerLoader(
          * @param plugin The plugin to create a module for.
          */
         @JvmStatic
-        fun module(plugin: FabricDedicatedServerLoader) =
-            DI.Module("FabricDedicatedServerLoader-${plugin::class.java.name}") {
-                // MinecraftServer instance
-                bind { instance(plugin.server) }
-
+        fun module(plugin: FabricClientLoader) =
+            DI.Module("FabricClientLoader-${plugin::class.java.name}") {
                 // Audiences
-                bind { instance(FabricServerAudiences.of(plugin.server)) }
+                bind { instance(FabricClientAudiences.of()) }
             }
     }
 
@@ -65,15 +60,7 @@ open class FabricDedicatedServerLoader(
         arrayOf(DI.Module("FabricModule-$modId", init = block))
     )
 
-    lateinit var server: MinecraftServer
-        private set
-
     override val rootModules by lazy { arrayOf(FabricLoaderBase.module(this), module(this)) }
 
-    override fun onInitializeServer() {
-        ServerLifecycleEvents.SERVER_STARTING.register {
-            server = it
-            enable()
-        }
-    }
+    override fun onInitializeClient(): Unit = enable()
 }

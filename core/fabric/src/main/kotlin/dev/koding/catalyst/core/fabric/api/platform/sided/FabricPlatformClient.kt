@@ -1,6 +1,6 @@
 /*
  * Catalyst - Minecraft plugin development toolkit
- * Copyright (C) 2022  Koding Development
+ * Copyright (C) 2023  Koding Development
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -15,28 +15,25 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package dev.koding.catalyst.core.fabric.loader
+package dev.koding.catalyst.core.fabric.api.platform.sided
 
-import net.kyori.adventure.platform.fabric.FabricServerAudiences
+import dev.koding.catalyst.core.common.api.platform.sided.PlatformClient
+import dev.koding.catalyst.core.fabric.api.platform.entity.player.wrap
+import net.fabricmc.api.EnvType
+import net.fabricmc.api.Environment
+import net.kyori.adventure.platform.fabric.FabricClientAudiences
+import net.minecraft.client.Minecraft
 import org.kodein.di.DI
-import org.kodein.di.bind
+import org.kodein.di.DIAware
 import org.kodein.di.instance
 
-object FabricLoaderModule {
-    @Suppress("DEPRECATION")
-    fun of(plugin: FabricDedicatedServerLoader) = DI.Module("PluginFabric-${plugin::class.java.name}") {
-        // Plugin binding
-        bind { instance(plugin) }
+/**
+ * The Fabric implementation of the [PlatformClient] interface.
+ */
+@Environment(EnvType.CLIENT)
+class FabricPlatformClient(override val di: DI) : DIAware, PlatformClient {
 
-        // Meta
-        bind { instance(plugin.container) }
+    val audiences by instance<FabricClientAudiences>()
 
-        // MinecraftServer instance
-        bind { instance(plugin.server) }
-
-        // Audiences
-        bind { instance(FabricServerAudiences.of(plugin.server)) }
-
-        // TODO: Components
-    }
+    override val player get() = Minecraft.getInstance().player?.wrap()
 }

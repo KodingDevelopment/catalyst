@@ -23,4 +23,4 @@ package dev.koding.catalyst.core.common.util
  */
 open class CatalystException(message: String) : Exception(message)
 
-class InvalidPlatformException : CatalystException("Functionality is not available on this platform")
+class UnsupportedPlatformException : CatalystException("Functionality is not available on this platform")

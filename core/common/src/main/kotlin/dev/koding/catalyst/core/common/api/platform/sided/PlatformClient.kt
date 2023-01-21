@@ -18,6 +18,8 @@
 package dev.koding.catalyst.core.common.api.platform.sided
 
 import dev.koding.catalyst.core.common.api.platform.PlatformBinding
+import dev.koding.catalyst.core.common.api.platform.entity.PlatformPlayer
+import dev.koding.catalyst.core.common.util.UnsupportedPlatformException
 
 /**
  * The platform server class provides server specific implementations of the API.
@@ -28,6 +30,11 @@ import dev.koding.catalyst.core.common.api.platform.PlatformBinding
  */
 interface PlatformClient {
     companion object : PlatformBinding<PlatformClient>()
+
+    /**
+     * The player that is currently logged in to the client.
+     */
+    val player: PlatformPlayer? get() = throw UnsupportedPlatformException()
 }
 
 object PlatformClientImpl : PlatformClient by PlatformClient.instance!!
