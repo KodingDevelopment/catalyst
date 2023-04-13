@@ -30,10 +30,10 @@ plugins {
     id("com.github.johnrengelman.shadow") version "7.1.2" apply false
 
     // Custom gradle plugin
-    id("gg.hubblemc.defaults") version "2.1.1"
-    id("gg.hubblemc.linting") version "2.1.1"
-    id("gg.hubblemc.paper") version "2.1.1" apply false
-    id("gg.hubblemc.velocity") version "2.1.1" apply false
+    id("gg.hubblemc.defaults") version "2.1.2"
+    id("gg.hubblemc.linting") version "2.1.2"
+    id("gg.hubblemc.paper") version "2.1.2" apply false
+    id("gg.hubblemc.velocity") version "2.1.2" apply false
 
     // IDEA plugin
     id("org.jetbrains.gradle.plugin.idea-ext") version "1.1.6"
