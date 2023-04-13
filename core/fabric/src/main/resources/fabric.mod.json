@@ -8,8 +8,8 @@
     },
     "depends": {
         "fabric": "*",
-        "fabric-language-kotlin": "\u003e\u003d1.8.6+kotlin.1.7.21",
-        "minecraft": "\u003e\u003d1.19.2"
+        "fabric-language-kotlin": ">=1.8.6+kotlin.1.7.21",
+        "minecraft": ">=1.19.2"
     },
     "description": "Catalyst is a powerful, yet easy to use, framework for rapidly developing cross-platform mods.",
     "entrypoints": {
