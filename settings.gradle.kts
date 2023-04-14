@@ -38,6 +38,9 @@ fun includeProject(name: String) {
     project(":$module").projectDir = File(path)
 }
 
+// Gradle
+includeBuild("gradle-plugin")
+
 // Core
 includeProject(":core:common")
 includeProject(":core:paper")

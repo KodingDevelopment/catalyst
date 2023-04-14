@@ -1,9 +1,6 @@
-import dev.koding.catalyst.gradle.util.relocate
-import net.minecrell.pluginyml.bukkit.BukkitPluginDescription
-
 /*
  * Catalyst - Minecraft plugin development toolkit
- * Copyright (C) 2022  Koding Development
+ * Copyright (C) 2023  Koding Development
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -19,22 +16,20 @@ import net.minecrell.pluginyml.bukkit.BukkitPluginDescription
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-apply(plugin = "gg.hubblemc.paper")
+plugins {
+    `kotlin-dsl`
+}
+
+repositories {
+    mavenCentral()
+    gradlePluginPortal()
+}
 
 dependencies {
-    // Project
-    shadow(project(":core-common"))
-    shadow("com.github.InnitGG:mapping-io:dfc566d20e")
-}
+    // Core API
+    implementation(gradleApi())
+    implementation(localGroovy())
 
-tasks {
-    shadowJar {
-        relocate("net.fabricmc.mappingio")
-    }
-}
-
-configure<BukkitPluginDescription> {
-    name = "Catalyst"
-    main = "dev.koding.catalyst.core.paper.CatalystPlugin"
-    load = BukkitPluginDescription.PluginLoadOrder.STARTUP
+    // Shadow plugin
+    implementation("gradle.plugin.com.github.johnrengelman:shadow:7.1.2")
 }

@@ -41,6 +41,9 @@ plugins {
     // Fabric
     id("dev.architectury.loom") version "1.1.329" apply false
     id("io.github.juuxel.loom-quiltflower") version "1.8.0" apply false
+
+    // Catalyst
+    id("dev.koding.catalyst.gradle.plugin")
 }
 
 subprojects {
@@ -53,6 +56,8 @@ subprojects {
 
     apply(plugin = "org.jetbrains.kotlin.jvm")
     apply(plugin = "org.jetbrains.kotlin.plugin.serialization")
+
+    apply(plugin = "dev.koding.catalyst.gradle.plugin")
 
     if (project.name != "core-fabric") {
         // Workaround for "fabric-loom must be applied BEFORE kapt in the plugins { } block."
