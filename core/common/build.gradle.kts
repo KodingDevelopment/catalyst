@@ -18,19 +18,19 @@
 
 dependencies {
     // Logging
-    shadow("org.slf4j:slf4j-api:2.0.5")
-    shadow("io.github.microutils:kotlin-logging-jvm:3.0.4")
+    shadow("org.slf4j:slf4j-api:2.0.7")
+    shadow("io.github.microutils:kotlin-logging-jvm:3.0.5")
 
     // Injection
-    shadow("org.kodein.di:kodein-di:7.16.0")
-    shadow("org.kodein.di:kodein-di-jxinject-jvm:7.16.0")
+    shadow("org.kodein.di:kodein-di:7.20.1")
+    shadow("org.kodein.di:kodein-di-jxinject-jvm:7.20.1")
 
     // Coroutines
     shadow("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
     shadow("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.6.4")
 
     // Serialization
-    shadow("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
+    shadow("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
 }
 
 configurations {
