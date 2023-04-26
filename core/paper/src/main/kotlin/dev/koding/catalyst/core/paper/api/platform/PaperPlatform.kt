@@ -18,8 +18,10 @@
 package dev.koding.catalyst.core.paper.api.platform
 
 import dev.koding.catalyst.core.common.api.platform.Platform
+import dev.koding.catalyst.core.common.api.platform.sided.PlatformCommon
 import dev.koding.catalyst.core.common.api.platform.sided.PlatformServer
 import dev.koding.catalyst.core.common.api.scheduler.Schedulers
+import dev.koding.catalyst.core.paper.api.platform.sided.PaperPlatformCommon
 import dev.koding.catalyst.core.paper.api.platform.sided.PaperPlatformServer
 import dev.koding.catalyst.core.paper.api.schedulers.PaperSchedulers
 import org.kodein.di.DI
@@ -31,6 +33,8 @@ import org.kodein.di.DI
  * @param di The dependency injection container.
  */
 class PaperPlatform(private val di: DI) : Platform {
+    override val common: PlatformCommon = PaperPlatformCommon(di)
     override val server: PlatformServer = PaperPlatformServer()
+
     override val schedulers: Schedulers = PaperSchedulers(di)
 }

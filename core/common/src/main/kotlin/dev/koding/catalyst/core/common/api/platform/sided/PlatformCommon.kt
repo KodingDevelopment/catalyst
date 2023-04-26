@@ -18,6 +18,7 @@
 package dev.koding.catalyst.core.common.api.platform.sided
 
 import dev.koding.catalyst.core.common.api.platform.PlatformBinding
+import dev.koding.catalyst.core.common.util.UnsupportedPlatformException
 
 /**
  * The platform server class provides server specific implementations of the API.
@@ -28,6 +29,36 @@ import dev.koding.catalyst.core.common.api.platform.PlatformBinding
  */
 interface PlatformCommon {
     companion object : PlatformBinding<PlatformCommon>()
+
+    /**
+     * Register an event listener for the given event class.
+     *
+     * @param owner The owner of the listener, allows for unregistration.
+     * @param clazz The event class.
+     * @param priority The priority of the event.
+     * @param ignoreCancelled Whether to ignore cancelled events.
+     * @param listener The listener.
+     */
+    fun <T : Any> registerEventListener(
+        owner: Any,
+        clazz: Class<T>,
+        priority: EventPriority = EventPriority.NORMAL,
+        ignoreCancelled: Boolean = false,
+        listener: (T) -> Unit
+    ): Unit = throw UnsupportedPlatformException()
+}
+
+/**
+ * The priority of an event listener. Run order is from lowest to highest,
+ * and MONITOR is always last.
+ */
+enum class EventPriority {
+    LOWEST,
+    LOW,
+    NORMAL,
+    HIGH,
+    HIGHEST,
+    MONITOR
 }
 
 object PlatformCommonImpl : PlatformCommon by PlatformCommon.instance!!
