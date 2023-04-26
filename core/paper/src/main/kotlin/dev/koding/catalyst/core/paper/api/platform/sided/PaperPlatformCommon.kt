@@ -19,7 +19,7 @@ package dev.koding.catalyst.core.paper.api.platform.sided
 
 import dev.koding.catalyst.core.common.api.platform.sided.EventPriority
 import dev.koding.catalyst.core.common.api.platform.sided.PlatformCommon
-import dev.koding.catalyst.core.paper.CatalystPlugin
+import dev.koding.catalyst.core.paper.loader.PaperLoader
 import org.bukkit.Bukkit
 import org.bukkit.event.Event
 import org.bukkit.event.Listener
@@ -32,7 +32,7 @@ import org.bukkit.event.EventPriority as BukkitEventPriority
  */
 class PaperPlatformCommon(di: DI) : PlatformCommon {
 
-    private val plugin by di.instance<CatalystPlugin>()
+    private val plugin by di.instance<PaperLoader>()
 
     /**
      * Stores the [WrappedListener] for each owner.

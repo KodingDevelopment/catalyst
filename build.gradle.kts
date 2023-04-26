@@ -39,7 +39,7 @@ plugins {
     id("org.jetbrains.gradle.plugin.idea-ext") version "1.1.6"
 
     // Fabric
-    id("dev.architectury.loom") version "1.1.329" apply false
+    id("quiet-fabric-loom") version "1.0-SNAPSHOT" apply false
     id("io.github.juuxel.loom-quiltflower") version "1.8.0" apply false
 
     // Catalyst
