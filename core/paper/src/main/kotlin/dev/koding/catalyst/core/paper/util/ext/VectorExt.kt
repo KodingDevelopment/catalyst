@@ -1,6 +1,6 @@
 /*
  * Catalyst - Minecraft plugin development toolkit
- * Copyright (C) 2022  Koding Development
+ * Copyright (C) 2023  Koding Development
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -15,28 +15,18 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package dev.koding.catalyst.core.paper.loader
+package dev.koding.catalyst.core.paper.util.ext
 
-import org.bukkit.plugin.java.JavaPlugin
-import org.kodein.di.DI
-import org.kodein.di.bind
-import org.kodein.di.delegate
-import org.kodein.di.instance
-import org.kodein.di.singleton
+import dev.koding.catalyst.core.common.api.platform.world.PlatformWorld
+import dev.koding.catalyst.core.paper.api.platform.world.unwrap
+import org.bukkit.Location
+import org.joml.Vector2f
+import org.joml.Vector3d
 
-object PaperLoaderModule {
-    fun of(plugin: PaperLoader) = DI.Module("PluginPaper-${plugin::class.java.name}") {
-        // Plugin binding
-        bind { instance(plugin) }
-        delegate<JavaPlugin>().to<PaperLoader>()
-
-        // Config
-        bind { instance(plugin.config) }
-
-        // Server
-        bind { instance(plugin.server) }
-
-        // Components
-        bind { singleton { PaperComponentBootstrap(instance()) } }
-    }
-}
+/**
+ * Converts a [Vector3d] to a [Location] in the given [PlatformWorld].
+ *
+ * @param world The world to convert to
+ * @param look the look vector to use for the location
+ */
+fun Vector3d.asLocation(world: PlatformWorld, look: Vector2f? = null): Location = Location(world.unwrap(), x, y, z, look?.x ?: 0f, look?.y ?: 0f)

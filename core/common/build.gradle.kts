@@ -31,10 +31,10 @@ dependencies {
 
     // Serialization
     shadow("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
-}
 
-configurations {
-    "api" {
-        isCanBeConsumed = true
-    }
+    // Math
+    shadow("org.joml:joml:1.10.5")
+
+    // Adventure
+    shadow("net.kyori:adventure-api:4.12.0")
 }

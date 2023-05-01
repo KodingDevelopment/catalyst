@@ -39,8 +39,8 @@ class PaperSchedulers(override val di: DI) : Schedulers, DIAware {
 
 class PaperSyncScheduler(private val plugin: JavaPlugin) : Scheduler {
     override fun schedule(delay: Long?, interval: Long?, task: () -> Unit): Task = when {
-        delay != null && interval != null -> plugin.server.scheduler.runTaskTimer(plugin, task, delay, interval).wrap()
-        delay != null -> plugin.server.scheduler.runTaskLater(plugin, task, delay).wrap()
+        delay != null && interval != null -> plugin.server.scheduler.runTaskTimer(plugin, task, delay / 50, interval / 50).wrap()
+        delay != null -> plugin.server.scheduler.runTaskLater(plugin, task, delay / 50).wrap()
         else -> plugin.server.scheduler.runTask(plugin, task).wrap()
     }
 }
@@ -50,11 +50,11 @@ class PaperAsyncScheduler(private val plugin: JavaPlugin) : Scheduler {
         delay != null && interval != null -> plugin.server.scheduler.runTaskTimerAsynchronously(
             plugin,
             task,
-            delay,
-            interval
+            delay / 50,
+            interval / 50
         ).wrap()
 
-        delay != null -> plugin.server.scheduler.runTaskLaterAsynchronously(plugin, task, delay).wrap()
+        delay != null -> plugin.server.scheduler.runTaskLaterAsynchronously(plugin, task, delay / 50).wrap()
         else -> plugin.server.scheduler.runTaskAsynchronously(plugin, task).wrap()
     }
 }

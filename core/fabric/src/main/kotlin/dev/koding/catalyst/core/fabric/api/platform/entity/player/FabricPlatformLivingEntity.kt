@@ -1,6 +1,6 @@
 /*
  * Catalyst - Minecraft plugin development toolkit
- * Copyright (C) 2022  Koding Development
+ * Copyright (C) 2023  Koding Development
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -15,12 +15,21 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package dev.koding.catalyst.core.common.util
+package dev.koding.catalyst.core.fabric.api.platform.entity.player
+
+import dev.koding.catalyst.core.common.api.platform.entity.PlatformEntity
+import dev.koding.catalyst.core.common.api.platform.entity.PlatformLivingEntity
+import net.minecraft.world.entity.Entity
+import net.minecraft.world.entity.LivingEntity
 
 /**
- * Base class for our custom exceptions, so they can be caught
- * in a single catch block.
+ * Implementation of [PlatformLivingEntity] for Fabric.
  */
-open class CatalystException(message: String) : Exception(message)
+class PaperPlatformLivingEntity(val ref: LivingEntity) :
+    PlatformLivingEntity,
+    PlatformEntity by (ref as Entity).wrap() {
+    override val health: Double get() = ref.health.toDouble()
+}
 
-class UnsupportedPlatformException : CatalystException("Functionality is not available on this platform")
+fun LivingEntity.wrap() = PaperPlatformLivingEntity(this)
+fun PlatformLivingEntity.unwrap() = (this as PaperPlatformLivingEntity).ref

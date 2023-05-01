@@ -1,6 +1,6 @@
 /*
  * Catalyst - Minecraft plugin development toolkit
- * Copyright (C) 2022  Koding Development
+ * Copyright (C) 2023  Koding Development
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -15,11 +15,16 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package dev.koding.catalyst.core.fabric
+package dev.koding.catalyst.core.common.api.platform.entity
 
-import dev.koding.catalyst.core.fabric.loader.FabricLoader
+/**
+ * Abstraction for an entity, representing a living object in the world.
+ * Builds on top of [PlatformEntity] to provide additional functionality.
+ */
+interface PlatformLivingEntity : PlatformEntity {
 
-@Suppress("unused")
-object CatalystModFabric : FabricLoader("catalyst", {
-    println("yea")
-})
+    /**
+     * The health of the entity
+     */
+    val health: Double
+}

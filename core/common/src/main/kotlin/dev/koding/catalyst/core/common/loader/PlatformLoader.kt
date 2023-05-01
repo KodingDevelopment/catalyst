@@ -19,6 +19,7 @@ package dev.koding.catalyst.core.common.loader
 
 import dev.koding.catalyst.core.common.injection.PluginModule
 import dev.koding.catalyst.core.common.injection.bootstrap.ComponentBootstrap
+import dev.koding.catalyst.core.common.util.ext.logExecutionTime
 import mu.KLogger
 import org.kodein.di.DI
 import org.kodein.di.DIAware
@@ -26,7 +27,6 @@ import org.kodein.di.allInstances
 import org.kodein.di.direct
 import org.kodein.di.jxinject.jxInjectorModule
 import java.nio.file.Path
-import kotlin.system.measureTimeMillis
 
 interface PlatformLoader : DIAware {
 
@@ -61,11 +61,15 @@ interface PlatformLoader : DIAware {
      */
     var dataDirectory: Path
 
+    /**
+     * Creates the dependency injector for the plugin, and runs all
+     * component bootstraps.
+     */
     fun enable() {
         try {
             logger.info { "Starting injection" }
 
-            val duration = measureTimeMillis {
+            logger.logExecutionTime({ info { "Injection complete in ${it}ms" } }) {
                 di = DI {
                     // Backwards compat
                     import(jxInjectorModule)
@@ -74,15 +78,17 @@ interface PlatformLoader : DIAware {
                     import(PluginModule.of(this@PlatformLoader), allowOverride = true)
                     importAll(*rootModules, *modules, allowOverride = true)
                 }
-            }
 
-            di.direct.allInstances<ComponentBootstrap>().forEach { it.bind() }
-            logger.info { "Injection complete in ${duration}ms" }
+                di.direct.allInstances<ComponentBootstrap>().forEach { it.bind() }
+            }
         } catch (e: Exception) {
             logger.error(e) { "Failed to inject" }
         }
     }
 
+    /**
+     * Disables the plugin, and runs all component shutdowns.
+     */
     fun disable() {
         di.direct.allInstances<ComponentBootstrap>().forEach { it.unbind() }
     }

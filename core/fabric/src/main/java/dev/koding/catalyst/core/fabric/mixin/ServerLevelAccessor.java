@@ -1,6 +1,6 @@
 /*
  * Catalyst - Minecraft plugin development toolkit
- * Copyright (C) 2022  Koding Development
+ * Copyright (C) 2023  Koding Development
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -15,28 +15,15 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package dev.koding.catalyst.core.paper.loader
+package dev.koding.catalyst.core.fabric.mixin;
 
-import org.bukkit.plugin.java.JavaPlugin
-import org.kodein.di.DI
-import org.kodein.di.bind
-import org.kodein.di.delegate
-import org.kodein.di.instance
-import org.kodein.di.singleton
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.storage.ServerLevelData;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.gen.Accessor;
 
-object PaperLoaderModule {
-    fun of(plugin: PaperLoader) = DI.Module("PluginPaper-${plugin::class.java.name}") {
-        // Plugin binding
-        bind { instance(plugin) }
-        delegate<JavaPlugin>().to<PaperLoader>()
-
-        // Config
-        bind { instance(plugin.config) }
-
-        // Server
-        bind { instance(plugin.server) }
-
-        // Components
-        bind { singleton { PaperComponentBootstrap(instance()) } }
-    }
+@Mixin(ServerLevel.class)
+public interface ServerLevelAccessor {
+    @Accessor
+    ServerLevelData getServerLevelData();
 }

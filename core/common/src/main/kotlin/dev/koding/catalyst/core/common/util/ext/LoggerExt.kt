@@ -1,6 +1,6 @@
 /*
  * Catalyst - Minecraft plugin development toolkit
- * Copyright (C) 2022  Koding Development
+ * Copyright (C) 2023  Koding Development
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -15,28 +15,16 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package dev.koding.catalyst.core.paper.loader
+package dev.koding.catalyst.core.common.util.ext
 
-import org.bukkit.plugin.java.JavaPlugin
-import org.kodein.di.DI
-import org.kodein.di.bind
-import org.kodein.di.delegate
-import org.kodein.di.instance
-import org.kodein.di.singleton
+import mu.KLogger
+import kotlin.system.measureTimeMillis
 
-object PaperLoaderModule {
-    fun of(plugin: PaperLoader) = DI.Module("PluginPaper-${plugin::class.java.name}") {
-        // Plugin binding
-        bind { instance(plugin) }
-        delegate<JavaPlugin>().to<PaperLoader>()
-
-        // Config
-        bind { instance(plugin.config) }
-
-        // Server
-        bind { instance(plugin.server) }
-
-        // Components
-        bind { singleton { PaperComponentBootstrap(instance()) } }
-    }
-}
+/**
+ * Logs the time taken to execute a block of code.
+ *
+ * @param log Executes after the block of code has been executed and is
+ *            passed the time taken to execute the block of code.
+ * @param block The block of code to execute.
+ */
+fun KLogger.logExecutionTime(log: KLogger.(Long) -> Unit, block: () -> Unit): Unit = log(measureTimeMillis(block))

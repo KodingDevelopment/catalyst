@@ -21,13 +21,24 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.util.*
+import java.util.Timer
+import java.util.TimerTask
 
+/**
+ * Static instance for a generic Scheduler implementation. If the platform
+ * doesn't have a relevant "Scheduler" class, we'll default it to using
+ * a Java timer & coroutine-based implementation.
+ */
 object DefaultSchedulers : Schedulers {
     override val sync: Scheduler = DefaultSyncScheduler
     override val async: Scheduler = DefaultAsyncScheduler
 }
 
+/**
+ * The sync scheduler is based on the Java Timer class, which is
+ * synchronized with the main thread. This is the default scheduler
+ * implementation for platforms which don't have a relevant "Scheduler".
+ */
 object DefaultSyncScheduler : Scheduler {
     override fun schedule(delay: Long?, interval: Long?, task: () -> Unit): Task {
         // Create a timer
@@ -55,6 +66,12 @@ object DefaultSyncScheduler : Scheduler {
     }
 }
 
+/**
+ * The async scheduler is based on the Kotlin coroutine library, which
+ * uses a thread pool to run tasks asynchronously. This is the default
+ * scheduler implementation for platforms which don't have a relevant
+ * "Scheduler".
+ */
 object DefaultAsyncScheduler : Scheduler {
 
     private val scope = CoroutineScope(Dispatchers.Default)
@@ -62,16 +79,20 @@ object DefaultAsyncScheduler : Scheduler {
     override fun schedule(delay: Long?, interval: Long?, task: () -> Unit): Task {
         // Create a task using coroutines
         val job = scope.launch {
-            // Delay if necessary
-            if (delay != null) delay(delay)
+            try {
+                // Delay if necessary
+                if (delay != null) delay(delay)
 
-            if (interval != null) {
-                while (true) {
+                if (interval != null) {
+                    while (true) {
+                        task()
+                        delay(interval)
+                    }
+                } else {
                     task()
-                    delay(interval)
                 }
-            } else {
-                task()
+            } catch (e: InterruptedException) {
+                // Ignore
             }
         }
 

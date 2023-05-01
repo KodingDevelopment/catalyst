@@ -36,5 +36,4 @@ tasks {
 configure<BukkitPluginDescription> {
     name = "Catalyst"
     main = "dev.koding.catalyst.core.paper.CatalystPlugin"
-    load = BukkitPluginDescription.PluginLoadOrder.STARTUP
 }

@@ -1,6 +1,6 @@
 /*
  * Catalyst - Minecraft plugin development toolkit
- * Copyright (C) 2022  Koding Development
+ * Copyright (C) 2023  Koding Development
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -15,12 +15,26 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package dev.koding.catalyst.core.common.util
+package dev.koding.catalyst.core.common.api.platform.entity
+
+import net.kyori.adventure.audience.Audience
+import net.kyori.adventure.audience.ForwardingAudience
+import net.kyori.adventure.text.Component
 
 /**
- * Base class for our custom exceptions, so they can be caught
- * in a single catch block.
+ * Abstraction for a player, representing a human entity in the world.
+ * Builds on top of [PlatformLivingEntity] to provide additional functionality.
+ * Implements the [Audience] interface to allow for sending messages to the player.
  */
-open class CatalystException(message: String) : Exception(message)
+interface PlatformPlayer : PlatformLivingEntity, ForwardingAudience {
 
-class UnsupportedPlatformException : CatalystException("Functionality is not available on this platform")
+    /**
+     * The player's name
+     */
+    val name: String
+
+    /**
+     * The player's display name as a component
+     */
+    val displayName: Component get() = Component.text(name)
+}

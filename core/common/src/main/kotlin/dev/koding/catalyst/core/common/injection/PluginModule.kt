@@ -17,8 +17,6 @@
  */
 package dev.koding.catalyst.core.common.injection
 
-import dev.koding.catalyst.core.common.api.scheduler.DefaultSchedulers
-import dev.koding.catalyst.core.common.api.scheduler.Schedulers
 import dev.koding.catalyst.core.common.injection.bootstrap.BaseComponentBootstrap
 import dev.koding.catalyst.core.common.injection.component.Tags
 import dev.koding.catalyst.core.common.loader.PlatformLoader
@@ -49,8 +47,5 @@ object PluginModule {
 
         // Components
         bind { singleton { BaseComponentBootstrap(instance()) } }
-
-        // Schedulers
-        bind<Schedulers> { instance(DefaultSchedulers) }
     }
 }

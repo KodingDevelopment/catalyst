@@ -4,7 +4,9 @@
     "injectors": {
         "defaultRequire": 1
     },
-    "mixins": [],
     "package": "dev.koding.catalyst.core.fabric.mixin",
-    "required": true
+    "required": true,
+    "server": [
+        "ServerLevelAccessor"
+    ]
 }

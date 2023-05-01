@@ -1,6 +1,6 @@
 /*
  * Catalyst - Minecraft plugin development toolkit
- * Copyright (C) 2022  Koding Development
+ * Copyright (C) 2023  Koding Development
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -19,32 +19,43 @@ package dev.koding.catalyst.core.fabric.loader
 
 import dev.koding.catalyst.core.common.loader.PlatformLoader
 import mu.KotlinLogging
-import net.fabricmc.api.ModInitializer
 import net.fabricmc.loader.api.FabricLoader
 import org.kodein.di.DI
+import org.kodein.di.bind
+import org.kodein.di.instance
 import java.nio.file.Path
 
 /**
- * Root class for Fabric mods which implement Catalyst.
+ * Base class for Fabric mods which implement Catalyst.
  */
-@Suppress("unused")
-open class FabricLoader(
+abstract class FabricLoaderBase(
     modId: String,
     override val modules: Array<DI.Module>
-) : PlatformLoader, ModInitializer {
+) : PlatformLoader {
 
-    constructor(modId: String, block: DI.Builder.() -> Unit) : this(
-        modId,
-        arrayOf(DI.Module("FabricModule-$modId", init = block))
-    )
+    companion object {
+        /**
+         * Create a new module for the plugin.
+         *
+         * @param plugin The plugin to create the module for.
+         */
+        @JvmStatic
+        fun module(plugin: FabricLoaderBase) = DI.Module("FabricLoaderBase-${plugin.container.metadata.name}") {
+            // Plugin binding
+            bind { instance(plugin) }
 
-    val container = FabricLoader.getInstance().getModContainer(modId).get()
+            // Meta
+            bind { instance(plugin.container) }
+        }
+    }
+
+    /**
+     * The container of the mod.
+     */
+    private val container = FabricLoader.getInstance().getModContainer(modId).get()
 
     override lateinit var di: DI
 
-    override val rootModules by lazy { arrayOf(FabricLoaderModule.of(this)) }
     override var logger = KotlinLogging.logger(container.metadata.name)
     override var dataDirectory: Path = FabricLoader.getInstance().configDir
-
-    override fun onInitialize(): Unit = enable()
 }
