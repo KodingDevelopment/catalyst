@@ -31,15 +31,19 @@ import java.util.UUID
  * This should assume the entity is in the world in most cases, however there is a
  * field to check if the entity is valid.
  *
- * TODO: Implement
- *
  * @author Koding
  */
 interface PlatformEntity : Identified {
     /**
      * The type of the entity (e.g. minecraft:player)
      */
-    val type: Key
+    val typeId: Key
+
+    /**
+     * The enum type of the entity
+     */
+    val type: PlatformEntityType
+        get() = PlatformEntityType.fromKey(typeId) ?: throw IllegalArgumentException("Unknown entity type $typeId")
 
     /**
      * The unique ID of the entity
@@ -82,11 +86,21 @@ interface PlatformEntity : Identified {
      * == Identified ==
      */
     override fun identity(): Identity = Identity.identity(uuid)
+}
 
-    class Type {
-        companion object {
-            @JvmStatic
-            val PLAYER = Key.key("minecraft", "player")
-        }
+/**
+ * Represents a type of entity
+ */
+enum class PlatformEntityType(val key: Key) {
+    PLAYER(Key.key("player"));
+
+    companion object {
+        /**
+         * Get a [PlatformEntityType] from its [Key]
+         *
+         * @param key The key of the entity type
+         * @return The entity type, or null if it doesn't exist
+         */
+        fun fromKey(key: Key): PlatformEntityType? = values().find { it.key == key }
     }
 }

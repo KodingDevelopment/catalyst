@@ -27,7 +27,7 @@ import net.minecraft.world.entity.LivingEntity
  */
 class PaperPlatformLivingEntity(val ref: LivingEntity) :
     PlatformLivingEntity,
-    PlatformEntity by (ref as Entity).wrapRaw() {
+    PlatformEntity by (ref as Entity).wrap() {
     override val health: Double get() = ref.health.toDouble()
 }
 

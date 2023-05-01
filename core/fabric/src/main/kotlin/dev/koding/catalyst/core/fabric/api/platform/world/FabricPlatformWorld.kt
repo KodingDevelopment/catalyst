@@ -21,6 +21,7 @@ import dev.koding.catalyst.core.common.api.platform.entity.PlatformEntity
 import dev.koding.catalyst.core.common.api.platform.entity.PlatformPlayer
 import dev.koding.catalyst.core.common.api.platform.world.PlatformWorld
 import dev.koding.catalyst.core.fabric.api.platform.entity.player.wrap
+import dev.koding.catalyst.core.fabric.api.platform.entity.player.wrapSmart
 import dev.koding.catalyst.core.fabric.mixin.ServerLevelAccessor
 import net.minecraft.core.BlockPos
 import net.minecraft.server.level.ServerLevel
@@ -40,7 +41,7 @@ class FabricPlatformWorld(private val ref: ServerLevel) : PlatformWorld {
         get() = ref.players().map { it.wrap() }
 
     override val entities: List<PlatformEntity>
-        get() = ref.allEntities.map { it.wrap() }
+        get() = ref.allEntities.map { it.wrapSmart() }
 
     override fun getChunk(x: Int, z: Int) = ref.getChunkAt(BlockPos(x, 0, z)).wrap()
 }

@@ -34,7 +34,7 @@ import java.util.UUID
  */
 class FabricPlatformEntity(val ref: Entity) : PlatformEntity {
     private val entityKey = EntityType.getKey(ref.type)
-    override val type = Key.key(entityKey.namespace, entityKey.path)
+    override val typeId = Key.key(entityKey.namespace, entityKey.path)
 
     override val uuid: UUID = ref.uuid
     override val id: Int = ref.id
@@ -54,14 +54,14 @@ class FabricPlatformEntity(val ref: Entity) : PlatformEntity {
     }
 }
 
-internal fun Entity.wrapRaw(): FabricPlatformEntity = FabricPlatformEntity(this)
+internal fun Entity.wrap(): FabricPlatformEntity = FabricPlatformEntity(this)
 fun PlatformEntity.unwrap(): Entity = (this as FabricPlatformEntity).ref
 
 /**
  * Performs smart wrapping of an entity into a Catalyst entity of the correct type.
  */
-fun Entity.wrap(): PlatformEntity = when (this) {
+fun Entity.wrapSmart(): PlatformEntity = when (this) {
     is Player -> wrap()
     is LivingEntity -> wrap()
-    else -> wrapRaw()
+    else -> wrap()
 }

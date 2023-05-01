@@ -36,12 +36,12 @@ interface PlatformServer {
     /**
      * A list of all worlds on the server.
      */
-    val worlds: List<PlatformWorld> get() = emptyList()
+    val worlds: List<PlatformWorld> get() = throw UnsupportedPlatformException()
 
     /**
      * A list of all players on the server.
      */
-    val players: List<PlatformPlayer> get() = emptyList()
+    val players: List<PlatformPlayer> get() = throw UnsupportedPlatformException()
 
     /**
      * Get a player by its UUID.

@@ -21,6 +21,7 @@ import dev.koding.catalyst.core.common.api.platform.world.BlockMetadata
 import dev.koding.catalyst.core.common.api.platform.world.PlatformBlock
 import dev.koding.catalyst.core.common.api.platform.world.PlatformChunk
 import dev.koding.catalyst.core.common.api.platform.world.PlatformWorld
+import dev.koding.catalyst.core.common.util.UnsupportedPlatformException
 import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
 import net.minecraft.core.BlockPos
@@ -42,14 +43,7 @@ class FabricPlatformChunk(
         return ref.getBlockState(position).block.wrap(position, this)
     }
 
-    override fun setBlock(x: Int, y: Int, z: Int, block: BlockMetadata) {
-//        val position = BlockPos(x, y, z)
-//        val state = Block.stateById(block.type)
-//
-//        ref.setBlockState(position)
-
-        throw NotImplementedError()
-    }
+    override fun setBlock(x: Int, y: Int, z: Int, block: BlockMetadata): Nothing = throw UnsupportedPlatformException()
 }
 
 @Environment(EnvType.SERVER)

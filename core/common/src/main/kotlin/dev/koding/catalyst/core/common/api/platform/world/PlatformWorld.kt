@@ -18,7 +18,9 @@
 package dev.koding.catalyst.core.common.api.platform.world
 
 import dev.koding.catalyst.core.common.api.platform.entity.PlatformEntity
+import dev.koding.catalyst.core.common.api.platform.entity.PlatformEntityType
 import dev.koding.catalyst.core.common.api.platform.entity.PlatformPlayer
+import dev.koding.catalyst.core.common.util.UnsupportedPlatformException
 
 /**
  * Abstracts away an instance of a single "world" from a platform. This is
@@ -52,14 +54,14 @@ interface PlatformWorld {
     /**
      * A list of all the entities in the world.
      */
-    val entities: List<PlatformEntity> get() = emptyList()
+    val entities: List<PlatformEntity> get() = throw UnsupportedPlatformException()
 
     /**
      * A list of all the players in the world.
      */
     val players: List<PlatformPlayer>
         get() = entities
-            .filter { it.type == PlatformEntity.Type.PLAYER }
+            .filter { it.type == PlatformEntityType.PLAYER }
             .map { it as PlatformPlayer }
 
     /**
