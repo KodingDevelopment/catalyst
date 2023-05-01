@@ -31,6 +31,7 @@ dependencies {
 
     // Serialization
     shadow("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
+    shadow("com.charleskorn.kaml:kaml:0.53.0")
 
     // Math
     shadow("org.joml:joml:1.10.5")
