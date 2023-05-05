@@ -35,14 +35,8 @@ import kotlin.io.path.outputStream
 open class ConfigFile<T : Any>(
     private val file: Path,
     private val adapter: ConfigAdapter,
-    data: T
+    var data: T
 ) {
-
-    /**
-     * The data of the config file
-     */
-    var data: T = data
-        private set
 
     /**
      * Load the config file from the given [file]
