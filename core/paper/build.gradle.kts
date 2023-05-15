@@ -25,6 +25,9 @@ dependencies {
     // Project
     shadow(project(":core-common"))
     shadow("com.github.InnitGG:mapping-io:dfc566d20e")
+
+    // Commands
+    shadow("cloud.commandframework:cloud-paper:1.8.3")
 }
 
 tasks {

@@ -38,4 +38,8 @@ dependencies {
 
     // Adventure
     shadow("net.kyori:adventure-api:4.12.0")
+
+    // Commands
+    shadow("cloud.commandframework:cloud-core:1.8.3")
+    shadow("cloud.commandframework:cloud-kotlin-extensions:1.8.3")
 }

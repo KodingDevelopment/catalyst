@@ -17,24 +17,32 @@
  */
 package dev.koding.catalyst.core.common.api.platform.entity
 
+import dev.koding.catalyst.core.common.api.command.CommandSource
+import dev.koding.catalyst.core.common.util.UnsupportedPlatformException
 import net.kyori.adventure.audience.Audience
 import net.kyori.adventure.audience.ForwardingAudience
 import net.kyori.adventure.text.Component
+import net.kyori.adventure.util.TriState
 
 /**
  * Abstraction for a player, representing a human entity in the world.
  * Builds on top of [PlatformLivingEntity] to provide additional functionality.
  * Implements the [Audience] interface to allow for sending messages to the player.
  */
-interface PlatformPlayer : PlatformLivingEntity, ForwardingAudience {
+interface PlatformPlayer : PlatformLivingEntity, ForwardingAudience, CommandSource {
 
     /**
      * The player's name
      */
-    val name: String
+    override val name: String
 
     /**
      * The player's display name as a component
      */
     val displayName: Component get() = Component.text(name)
+
+    //region CommandSource
+    override fun value(permission: String?): TriState = throw UnsupportedPlatformException()
+    //endregion
+
 }

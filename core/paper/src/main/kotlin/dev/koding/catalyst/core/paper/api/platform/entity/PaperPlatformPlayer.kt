@@ -21,6 +21,7 @@ import dev.koding.catalyst.core.common.api.platform.entity.PlatformLivingEntity
 import dev.koding.catalyst.core.common.api.platform.entity.PlatformPlayer
 import net.kyori.adventure.audience.Audience
 import net.kyori.adventure.text.Component
+import net.kyori.adventure.util.TriState
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Player
 
@@ -29,10 +30,14 @@ class PaperPlatformPlayer(val ref: Player) : PlatformLivingEntity by (ref as Liv
     override val name: String get() = ref.name
     override val displayName: Component get() = ref.displayName()
 
-    /*
-     * == Audience ==
-     */
+    /* == ForwardingAudience == */
     override fun audiences(): MutableIterable<Audience> = mutableListOf(ref)
+
+    /* == PermissionChecker == */
+    override fun value(permission: String?): TriState {
+        if (permission == null || !ref.isPermissionSet(permission)) return TriState.NOT_SET
+        return TriState.byBoolean(ref.hasPermission(permission))
+    }
 }
 
 fun Player.wrap() = PaperPlatformPlayer(this)

@@ -22,6 +22,7 @@ import dev.koding.catalyst.core.common.api.platform.sided.PlatformServer
 import dev.koding.catalyst.core.common.api.platform.world.PlatformWorld
 import dev.koding.catalyst.core.paper.api.platform.entity.wrap
 import dev.koding.catalyst.core.paper.api.platform.world.wrap
+import net.kyori.adventure.audience.Audience
 import org.bukkit.Bukkit
 import java.util.UUID
 
@@ -37,4 +38,6 @@ class PaperPlatformServer : PlatformServer {
     override fun getPlayer(name: String): PlatformPlayer? = Bukkit.getPlayer(name)?.wrap()
     override fun getPlayer(uuid: UUID): PlatformPlayer? = Bukkit.getPlayer(uuid)?.wrap()
     override fun getWorld(name: String): PlatformWorld? = Bukkit.getWorld(name)?.wrap()
+
+    override fun audiences(): MutableIterable<Audience> = mutableListOf(Bukkit.getConsoleSender())
 }

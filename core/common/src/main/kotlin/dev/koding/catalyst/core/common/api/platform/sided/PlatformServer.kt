@@ -21,6 +21,8 @@ import dev.koding.catalyst.core.common.api.platform.PlatformBinding
 import dev.koding.catalyst.core.common.api.platform.entity.PlatformPlayer
 import dev.koding.catalyst.core.common.api.platform.world.PlatformWorld
 import dev.koding.catalyst.core.common.util.UnsupportedPlatformException
+import net.kyori.adventure.audience.Audience
+import net.kyori.adventure.audience.ForwardingAudience
 import java.util.UUID
 
 /**
@@ -30,7 +32,7 @@ import java.util.UUID
  *
  * @author Koding
  */
-interface PlatformServer {
+interface PlatformServer : ForwardingAudience {
     companion object : PlatformBinding<PlatformServer>()
 
     /**
@@ -66,6 +68,13 @@ interface PlatformServer {
      * @return The world, or null if it doesn't exist.
      */
     fun getWorld(name: String): PlatformWorld? = throw UnsupportedPlatformException()
+
+    //region ForwardingAudience
+    /**
+     * Implementations should return a mutable iterable of all audiences on the server.
+     */
+    override fun audiences(): MutableIterable<Audience> = throw UnsupportedPlatformException()
+    //endregion
 }
 
 object PlatformServerImpl : PlatformServer by PlatformServer.instance!!

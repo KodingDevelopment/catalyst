@@ -17,6 +17,16 @@
  */
 package dev.koding.catalyst.core.paper.loader
 
+import cloud.commandframework.bukkit.CloudBukkitCapabilities
+import cloud.commandframework.execution.AsynchronousCommandExecutionCoordinator
+import cloud.commandframework.paper.PaperCommandManager
+import dev.koding.catalyst.core.common.api.command.CatalystCommandManager
+import dev.koding.catalyst.core.common.api.command.CommandSource
+import dev.koding.catalyst.core.common.api.command.ConsoleCommandSource
+import dev.koding.catalyst.core.common.api.platform.entity.PlatformPlayer
+import dev.koding.catalyst.core.paper.api.platform.entity.unwrap
+import dev.koding.catalyst.core.paper.api.platform.entity.wrap
+import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 import org.kodein.di.DI
 import org.kodein.di.bind
@@ -38,5 +48,38 @@ object PaperLoaderModule {
 
         // Components
         bind { singleton { PaperComponentBootstrap(instance()) } }
+
+        // Commands
+        bind<CatalystCommandManager> {
+            singleton {
+                val commandManager = PaperCommandManager(
+                    plugin,
+                    AsynchronousCommandExecutionCoordinator.builder<CommandSource>().build(),
+                    {
+                        // Map from a Bukkit sender to a Catalyst CommandSource
+                        val player = it as? Player ?: return@PaperCommandManager ConsoleCommandSource
+                        player.wrap()
+                    },
+                    {
+                        // Map from a Catalyst CommandSource to a Bukkit sender
+                        when (it) {
+                            is PlatformPlayer -> it.unwrap()
+                            is ConsoleCommandSource -> plugin.server.consoleSender
+                            else -> throw IllegalArgumentException("Unknown command source type: ${it::class.java.name}")
+                        }
+                    }
+                )
+
+                // Register with Brigadier
+                commandManager.registerBrigadier()
+
+                // Register capabilities
+                if (commandManager.hasCapability(CloudBukkitCapabilities.ASYNCHRONOUS_COMPLETION)) {
+                    commandManager.registerAsynchronousCompletions()
+                }
+
+                commandManager
+            }
+        }
     }
 }
