@@ -23,8 +23,10 @@ apply(plugin = "gg.hubblemc.paper")
 
 dependencies {
     // Project
-    shadow(project(":core-common"))
     shadow("com.github.InnitGG:mapping-io:dfc566d20e")
+    shadow(project(":core-common")) {
+        exclude(group = "org.yaml", module = "snakeyaml")
+    }
 
     // Commands
     shadow("cloud.commandframework:cloud-paper:1.8.3")

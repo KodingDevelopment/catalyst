@@ -33,11 +33,16 @@ dependencies {
     shadow("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
     shadow("com.charleskorn.kaml:kaml:0.53.0")
 
+    // Config
+    @Suppress("VulnerableLibrariesLocal", "RedundantSuppression")
+    shadow("org.yaml:snakeyaml:1.33")
+
     // Math
     shadow("org.joml:joml:1.10.5")
 
     // Adventure
-    shadow("net.kyori:adventure-api:4.12.0")
+    shadow("net.kyori:adventure-api:4.13.1")
+    shadow("net.kyori:adventure-text-minimessage:4.13.1")
 
     // Commands
     shadow("cloud.commandframework:cloud-core:1.8.3")
