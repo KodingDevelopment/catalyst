@@ -15,15 +15,12 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-@file:OptIn(ExperimentalPathApi::class)
-
 package dev.koding.catalyst.core.common.util.ext
 
 import dev.koding.catalyst.core.common.loader.PlatformLoader
 import java.io.File
 import java.nio.file.FileSystems
 import java.nio.file.Path
-import kotlin.io.path.ExperimentalPathApi
 import kotlin.io.path.copyTo
 import kotlin.io.path.createDirectories
 import kotlin.io.path.exists
@@ -46,9 +43,6 @@ fun PlatformLoader.saveResources(vararg resources: String) {
             val hostFile = dataDirectory.resolve(resource.pathString)
             if (!resource.exists()) return@forEach
 
-            // Create the parent dirs
-            hostFile.parent.createDirectories()
-
             // If the resource is a directory, copy it recursively
             if (resource.isDirectory()) {
                 resource.copyToRecursivelySafe(hostFile)
@@ -56,6 +50,7 @@ fun PlatformLoader.saveResources(vararg resources: String) {
             }
 
             // Otherwise, copy the file
+            hostFile.parent.createDirectories()
             resource.copyTo(hostFile)
         }
     }
@@ -79,13 +74,11 @@ internal fun Path.copyToRecursivelySafe(dest: Path) {
         val relativePath = relativize(file).toString()
         val destFile = dest.resolve(relativePath)
 
-        // Create the directories
-        destFile.parent.createDirectories()
-
         if (file.isDirectory()) {
             file.copyToRecursivelySafe(destFile)
         } else {
             if (destFile.exists()) return@forEach
+            destFile.parent.createDirectories()
             file.copyTo(destFile)
         }
     }
