@@ -17,6 +17,7 @@
  */
 package dev.koding.catalyst.core.common.injection
 
+import dev.koding.catalyst.core.common.api.messages.LocalizationModule
 import dev.koding.catalyst.core.common.injection.bootstrap.BaseComponentBootstrap
 import dev.koding.catalyst.core.common.injection.component.Tags
 import dev.koding.catalyst.core.common.loader.PlatformLoader
@@ -47,5 +48,8 @@ object PluginModule {
 
         // Components
         bind { singleton { BaseComponentBootstrap(instance()) } }
+
+        // Modules
+        import(LocalizationModule.of(plugin))
     }
 }

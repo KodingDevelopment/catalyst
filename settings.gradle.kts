@@ -54,8 +54,13 @@ plugins {
 }
 
 gitHooks {
-    commitMsg { conventionalCommits() }
-    preCommit { tasks("lint") }
+    commitMsg {
+        conventionalCommits {
+            defaultTypes()
+            types("wip")
+        }
+    }
 
+    preCommit { tasks("lint") }
     createHooks(true)
 }
