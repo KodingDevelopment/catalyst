@@ -1,7 +1,6 @@
 name: Trigger Jitpack Build
 on:
   push:
-  pull_request:
 
 jobs:
   build:
