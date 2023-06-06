@@ -32,6 +32,11 @@ class Translation(val key: String) {
     internal val formats = ConcurrentHashMap<Locale, Message>()
 
     /**
+     * The default message for this translation.
+     */
+    val default get() = get(Localization.DEFAULT_LOCALE)
+
+    /**
      * Register a message for this translation.
      *
      * @param locale The locale of the message
