@@ -20,6 +20,8 @@ package dev.koding.catalyst.core.common.api.messages
 import dev.koding.catalyst.core.common.util.Components
 import net.kyori.adventure.audience.Audience
 import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.ComponentLike
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
 
 /**
@@ -77,3 +79,28 @@ class Message(private val messages: Array<String>) {
         all(*placeholders).forEach { audience.sendMessage(it) }
 
 }
+
+/**
+ * Create an unparsed placeholder.
+ *
+ * @param value The value of the placeholder
+ */
+@Suppress("unused")
+infix fun String.unparsed(value: String): TagResolver = Placeholder.unparsed(this, value)
+
+/**
+ * Create a parsed placeholder.
+ *
+ * @param value The value of the placeholder
+ */
+@Suppress("unused")
+infix fun String.parsed(value: String): TagResolver = Placeholder.parsed(this, value)
+
+/**
+ * Create a component placeholder.
+ *
+ * @param value The value of the placeholder
+ */
+infix fun String.component(value: ComponentLike): TagResolver = Placeholder.component(this, value)
+
+// TODO: Styling placeholder
